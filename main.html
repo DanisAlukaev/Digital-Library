@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset = "utf-8">
+        <title>site</title>
+        <link rel = "stylesheet" href = "styles.css"/>
+    </head>
+    <body>
+        <div id = "wrapper">
+            <div id = "header">
+                <p>Header</p>
+                <div id = "log-in">
+                    <a href = "Backend/Sign-in">Log-in or Sign-up</a>
+                </div>
+            </div>
+            
+            <div id = "line-above">
+                <div id = "search-and-filter">
+                    <form action = "Backend/Search" method = "post">
+                        <fieldset>
+                            <input type = "text" name = "SearchRequest" placeholder="Search" required/>
+                            <input type = "submit">
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div id = "information">
+                    <p class = "text">Information about particular item</p>
+                </div>
+
+                <div id = "rating">
+                    <p class = "text">Rating box</p>
+                </div>
+            </div>
+            
+            <div id = "main">
+                <div id = "nav">
+                    <p class = "text">List of Items</p>
+                </div>
+                
+                <div id = "content">
+                    <p class = "text">Content</p>
+                </div>
+            </div>
+            
+            <div id = "footer"><p>Copyrite</p></div>
+            
+        </div>
+    </body>
+</html>
