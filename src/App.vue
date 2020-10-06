@@ -1,0 +1,27 @@
+<template>
+  <div id="app">
+      <wrapper></wrapper>
+  </div>
+</template>
+
+<script>import wrapper from './components/v-wrapper';
+export default {
+  name: 'App',
+  components: {
+    wrapper
+  }
+}
+</script>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 1vh;
+    height: 100%;
+    width: 100%;
+}
+</style>
