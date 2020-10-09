@@ -3,7 +3,7 @@ import Router from 'vue-router';
 import vHome from '../components/v-home';
 Vue.use(Router);
 let routes = [{
-        name: "v-home",
+        name: "home",
         path: "/",
         component: vHome
     },
@@ -25,6 +25,7 @@ let routes = [{
     }
 ];
 let router = new Router({
-    routes: routes
+    routes: routes,
+    mode: 'hash'
 });
 export default router;

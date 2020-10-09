@@ -20,7 +20,6 @@
     display: flex;
     width: 100%;
     background-color: #68975B;
-    height: 10vh;
     border: 3px solid #222222;
     border-radius: 2vh;
 }

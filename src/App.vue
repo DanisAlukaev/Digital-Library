@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-      <wrapper></wrapper>
+      <v-wrapper></v-wrapper>
   </div>
 </template>
 
-<script>import wrapper from './components/v-wrapper';
+<script>import vWrapper from './components/v-wrapper';
 export default {
   name: 'App',
   components: {
-    wrapper
+    vWrapper
   }
 }
 </script>

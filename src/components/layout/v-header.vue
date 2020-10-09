@@ -6,10 +6,13 @@
             </router-link>
         </div>
         <div class="log-in">
-            <span>Log-in</span>
-
+            <b-button pill variant="info" v-b-modal="'log_in_form'" class="log-in-button">Log-in</b-button>
 
         </div>
+        <b-modal size="lg" id='log_in_form' centered title="Log-in" ok-only button-size="lg">
+            <p>enter you login and password</p>
+            <p>Write form here!</p>
+        </b-modal>
     </div>
 </template>
 
@@ -23,9 +26,17 @@
 .home {
     position: fixed;
 }
+.v-header {
+    z-index: 100;
+    position: fixed;
+}
 .log-in {
     position: fixed;
-    right: 3vh;
+    right: 6vh;
     width: 10%;
     }
+.log-in-button {
+    width: 13vh;
+    height: 5vh;
+}
 </style>

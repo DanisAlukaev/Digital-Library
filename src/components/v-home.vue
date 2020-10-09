@@ -30,11 +30,13 @@
 
 <style scoped>
  .v-search {
+     height: calc(10vh + 3px);
      width: 20%;
      position: relative;
      left: 0;
  }
  .v-info {
+     height: calc(10vh + 3px);
      display: flex;
      position: relative;
      right: 0;
@@ -43,7 +45,8 @@
  .v-home {
      display: block;
      position: relative;
-     top: calc(3vh + 11px);
+     top: 6vh;
+     overflow: hidden;
  }
  .v-list {
      width: 20%;
@@ -53,9 +56,10 @@
      left: 0;
      margin: 0;
      background-color: #88B77B;
-     height: calc(84vh - 6px);
+     height: calc(78vh - 6px);
  }
  .v-content {
+     height: calc(78vh - 6px);
      display: flex;
      width: 80%;
      position: relative;
