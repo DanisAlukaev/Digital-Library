@@ -8,7 +8,7 @@
     font-style: normal;
     font-size: 16px;
     text-decoration: none;
-    color: black;
+    color: rgba(198,231,206,1);
 }
 .nav-bar-item {
     font-style: italic;
@@ -28,17 +28,17 @@
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: #48773B;
+    background-color: rgba(0,154,49,1);
  }
 .v-footer {
     width: 100%;
-    height: calc(5vh + 3px);
+    height: calc(4vh + 3px);
     padding: 4px;
     display: flex;
     position: fixed;
     bottom: 0;
-    border: 3px solid #38672B;
-    background-color: #48773B;
+    /*border: 3px solid #38672B;*/
+    background-color: rgba(0,154,49,1);
 }
 .home {
     position: fixed;
@@ -55,23 +55,26 @@
 .log-in-button {
     width: 13vh;
     height: 5vh;
+    /*цвет не меняется. Так понимаю из-за бутстрапа.*/
+    background-color: rgba(132,207,150,1) !important;
 }
 .content {
     position: relative;
     top: 50%;
 }
 .v-search {
-    height: calc(10vh + 3px);
+    height: calc(11vh + 3px);
     width: 20%;
     position: relative;
     left: 0;
     display: flex;
-    background-color: #68975B;
-    border: 3px solid #222222;
-    border-radius: 2vh;
+    background-color: rgba(132,207,150,1);
+    border-right: 3px solid rgba(198,231,206,1);
+    /*border: 3px solid #222222;
+    border-radius: 5%;*/
 }
 .v-info {
-    height: calc(10vh + 3px);
+    height: calc(11vh + 3px);
     display: flex;
     position: relative;
     right: 0;
@@ -90,8 +93,9 @@
     top: 0;
     left: 0;
     margin: 0;
-    background-color: #88B77B;
+    background-color: rgba(132,207,150,1);
     height: calc(78vh - 6px);
+    border-right: 3px solid rgba(198,231,206,1);
 }
 .v-content {
     height: calc(78vh - 6px);
@@ -111,20 +115,22 @@
 }
 .information, .rating {
     display: inline-flex;
-    background-color: #88B77B;
+    background-color: rgba(132,207,150,1);
     height: 10vh;
-    border: 3px solid #222222;
-    border-radius: 2vh;
 }
 .information {
     width: 40%;
+    border-right: 1.5px solid rgba(198,231,206,1);
 }
 .rating {
     position: relative;
     top: 0;
     width: 60%;
+    border-left: 1.5px solid rgba(198,231,206,1);
 }
 .form-search {
+    width: 100%;
+    height: 100%;
     padding: 0 5%;
     border-style: none;
     margin: auto;
@@ -133,7 +139,19 @@
     border-style: none;
 }
 .input-search {
-    width: 90%;
-    background-color: #ececec;
+    position: relative;
+    top: -1vh;
+    height: calc(3.5vh + 2px) !important;
+    text-align: center;
+    width: 100% !important;
+    background-color: rgba(206,255,206,1);
+    color: rgba(198,231,206,1);
     border-style: none;
+    border-radius: 7px;
+}
+.search-button {
+    position: relative;
+    top: -1vh;
+    width: 9vh;
+    height: 4vh;
 }

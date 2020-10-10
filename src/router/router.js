@@ -22,10 +22,15 @@ let routes = [{
     {
         name: "account",
         path: "/account"
+    },
+    {
+        name: "catchAll",
+        component: vHome,
+        path: "*"
     }
 ];
 let router = new Router({
     routes: routes,
-    mode: 'hash'
+    mode: 'history'
 });
 export default router;
