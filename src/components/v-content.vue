@@ -11,8 +11,4 @@
 </script>
 
 <style scoped>
-    .content {
-        position: relative;
-        top: 50%;
-    }
 </style>

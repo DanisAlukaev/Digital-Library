@@ -23,20 +23,4 @@
 </script>
 
 <style scoped>
-.home {
-    position: fixed;
-}
-.v-header {
-    z-index: 100;
-    position: fixed;
-}
-.log-in {
-    position: fixed;
-    right: 6vh;
-    width: 10%;
-    }
-.log-in-button {
-    width: 13vh;
-    height: 5vh;
-}
 </style>

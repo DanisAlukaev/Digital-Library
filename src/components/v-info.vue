@@ -22,19 +22,4 @@
 </script>
 
 <style scoped>
-    .information, .rating {
-        display: inline-flex;
-        background-color: #88B77B;
-        height: 10vh;
-        border: 3px solid #222222;
-        border-radius: 2vh;
-    }
-    .information {
-        width: 40%;
-    }
-    .rating {
-        position: relative;
-        top: 0;
-        width: 60%;
-    }
 </style>
