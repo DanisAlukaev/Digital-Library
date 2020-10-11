@@ -119,13 +119,13 @@
     height: 10vh;
 }
 .information {
-    width: 40%;
+    width: 60%;
     border-right: 1.5px solid rgba(198,231,206,1);
 }
 .rating {
     position: relative;
     top: 0;
-    width: 60%;
+    width: 40%;
     border-left: 1.5px solid rgba(198,231,206,1);
 }
 .form-search {
