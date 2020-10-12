@@ -1,0 +1,139 @@
+*{
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    @import url('https://fonts.googleapis.com/css2?family=Alegreya&display=swap');
+    font-family: 'Alegreya', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    text-decoration: none;
+    color: black;
+}
+.nav-bar-item {
+    font-style: italic;
+    font-size: 30px;
+    text-decoration: none;
+    position: relative;
+    left: 1vh;
+}
+.footer-item {
+    font-style: italic;
+    font-size: 20px;
+}
+.v-header {
+    padding: 4px;
+    height: 7vh;
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #48773B;
+ }
+.v-footer {
+    width: 100%;
+    height: calc(5vh + 3px);
+    padding: 4px;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    border: 3px solid #38672B;
+    background-color: #48773B;
+}
+.home {
+    position: fixed;
+}
+.v-header {
+    z-index: 100;
+    position: fixed;
+}
+.log-in {
+    position: fixed;
+    right: 6vh;
+    width: 10%;
+}
+.log-in-button {
+    width: 13vh;
+    height: 5vh;
+}
+.content {
+    position: relative;
+    top: 50%;
+}
+.v-search {
+    height: calc(10vh + 3px);
+    width: 20%;
+    position: relative;
+    left: 0;
+    display: flex;
+    background-color: #68975B;
+    border: 3px solid #222222;
+    border-radius: 2vh;
+}
+.v-info {
+    height: calc(10vh + 3px);
+    display: flex;
+    position: relative;
+    right: 0;
+    width: 80%;
+}
+.v-home {
+    display: block;
+    position: relative;
+    top: 6vh;
+    overflow: hidden;
+}
+.v-list {
+    width: 20%;
+    display: flex;
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    background-color: #88B77B;
+    height: calc(78vh - 6px);
+}
+.v-content {
+    height: calc(78vh - 6px);
+    display: flex;
+    width: 80%;
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: 0;
+}
+.top, .center {
+    display: flex;
+}
+.center {
+    position: relative;
+    top: 0;
+}
+.information, .rating {
+    display: inline-flex;
+    background-color: #88B77B;
+    height: 10vh;
+    border: 3px solid #222222;
+    border-radius: 2vh;
+}
+.information {
+    width: 40%;
+}
+.rating {
+    position: relative;
+    top: 0;
+    width: 60%;
+}
+.form-search {
+    padding: 0 5%;
+    border-style: none;
+    margin: auto;
+}
+.fieldset-search {
+    border-style: none;
+}
+.input-search {
+    width: 90%;
+    background-color: #ececec;
+    border-style: none;
+}
