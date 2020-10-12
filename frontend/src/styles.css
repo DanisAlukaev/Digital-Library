@@ -1,0 +1,161 @@
+*{
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+    @import url('https://fonts.googleapis.com/css2?family=Alegreya&display=swap');
+    font-family: 'Alegreya', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    text-decoration: none;
+    color: rgba(198,231,206,1);
+}
+.nav-bar-item {
+    font-style: italic;
+    font-size: 30px;
+    text-decoration: none;
+    position: relative;
+    left: 1vh;
+}
+.footer-item {
+    font-style: italic;
+    font-size: 20px;
+}
+.v-header {
+    padding: 4px;
+    height: 7vh;
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(0,154,49,1);
+ }
+.v-footer {
+    width: 100%;
+    height: calc(4vh + 3px);
+    padding: 4px;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    /*border: 3px solid #38672B;*/
+    background-color: rgba(0,154,49,1);
+}
+.home {
+    position: fixed;
+}
+.v-header {
+    z-index: 100;
+    position: fixed;
+}
+.log-in {
+    position: fixed;
+    right: 6vh;
+    width: 10%;
+}
+.log-in-button {
+    width: 13vh;
+    height: 5vh;
+    /*цвет не меняется. Так понимаю из-за бутстрапа.*/
+    background-color: rgba(132,207,150,1) !important;
+}
+.content {
+    position: relative;
+    top: 50%;
+}
+.v-search {
+    height: calc(11vh + 3px);
+    width: 20%;
+    position: relative;
+    left: 0;
+    display: flex;
+    background-color: rgba(132,207,150,1);
+    border-right: 3px solid rgba(198,231,206,1);
+    /*border: 3px solid #222222;
+    border-radius: 5%;*/
+}
+.v-info {
+    height: calc(11vh + 3px);
+    display: flex;
+    position: relative;
+    right: 0;
+    width: 80%;
+}
+.v-home {
+    display: block;
+    position: relative;
+    top: 6vh;
+    overflow: hidden;
+}
+.v-list {
+    width: 20%;
+    display: flex;
+    position: relative;
+    top: 0;
+    left: 0;
+    margin: 0;
+    background-color: rgba(132,207,150,1);
+    height: calc(78vh - 6px);
+    border-right: 3px solid rgba(198,231,206,1);
+}
+.v-content {
+    height: calc(78vh - 6px);
+    display: flex;
+    width: 80%;
+    position: relative;
+    left: 0;
+    top: 0;
+    margin: 0;
+}
+.top, .center {
+    display: flex;
+}
+.center {
+    position: relative;
+    top: 0;
+}
+.information, .rating {
+    display: inline-flex;
+    background-color: rgba(132,207,150,1);
+    height: 10vh;
+}
+.information {
+    width: 60%;
+    border-right: 1.5px solid rgba(198,231,206,1);
+}
+.rating {
+    position: relative;
+    top: 0;
+    width: 40%;
+    border-left: 1.5px solid rgba(198,231,206,1);
+}
+.form-search {
+    width: 100%;
+    height: 100%;
+    padding: 0 5%;
+    border-style: none;
+    margin: auto;
+}
+.fieldset-search {
+    border-style: none;
+}
+.input-search {
+    position: relative;
+    top: -1vh;
+    height: calc(3.5vh + 2px) !important;
+    text-align: center;
+    width: 100% !important;
+    background-color: rgba(206,255,206,1);
+    color: rgba(198,231,206,1);
+    border-style: none;
+    border-radius: 7px;
+}
+.search-button {
+    position: relative;
+    top: -1vh;
+    width: 9vh;
+    height: 4vh;
+}
+.log-in-form-button {
+    width: 9vh;
+    height: 4vh;
+}
