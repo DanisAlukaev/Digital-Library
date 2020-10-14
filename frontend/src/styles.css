@@ -1,14 +1,17 @@
+@font-face {
+    src: url('./assets/electra/Elektra Text Pro обычный.eot');
+    font-family: 'electra';
+    src: url('./assets/electra/Elektra Text Pro обычный.otf');
+}
 *{
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
-    @import url('https://fonts.googleapis.com/css2?family=Alegreya&display=swap');
-    font-family: 'Alegreya', sans-serif;
-    font-weight: 400;
-    font-style: normal;
+    font-family: 'electra';
     font-size: 16px;
     text-decoration: none;
     color: rgba(198,231,206,1);
+    text-align: left;
 }
 .nav-bar-item {
     font-style: italic;
@@ -28,8 +31,9 @@
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: rgba(0,154,49,1);
+    /*background-color: #1a428a;*/
  }
+
 .v-footer {
     width: 100%;
     height: calc(4vh + 3px);
@@ -37,8 +41,6 @@
     display: flex;
     position: fixed;
     bottom: 0;
-    /*border: 3px solid #38672B;*/
-    background-color: rgba(0,154,49,1);
 }
 .home {
     position: fixed;
@@ -55,7 +57,6 @@
 .log-in-button {
     width: 13vh;
     height: 5vh;
-    /*цвет не меняется. Так понимаю из-за бутстрапа.*/
     background-color: rgba(132,207,150,1) !important;
 }
 .content {
@@ -68,10 +69,10 @@
     position: relative;
     left: 0;
     display: flex;
-    background-color: rgba(132,207,150,1);
-    border-right: 3px solid rgba(198,231,206,1);
-    /*border: 3px solid #222222;
-    border-radius: 5%;*/
+    background-color: #EEEEEE;
+    border-right: 2px solid #BBBBBB;
+    border-bottom: 2px solid #BBBBBB;
+    /*border-radius: 5px;*/
 }
 .v-info {
     height: calc(11vh + 3px);
@@ -83,7 +84,7 @@
 .v-home {
     display: block;
     position: relative;
-    top: 6vh;
+    top: 7vh;
     overflow: hidden;
 }
 .v-list {
@@ -93,9 +94,10 @@
     top: 0;
     left: 0;
     margin: 0;
-    background-color: rgba(132,207,150,1);
+    background-color: #EEEEEE;
     height: calc(78vh - 6px);
-    border-right: 3px solid rgba(198,231,206,1);
+    border-right: 2px solid #BBBBBB;
+    /*border-radius: 5px;*/
 }
 .v-content {
     height: calc(78vh - 6px);
@@ -115,18 +117,18 @@
 }
 .information, .rating {
     display: inline-flex;
-    background-color: rgba(132,207,150,1);
-    height: 10vh;
+    background-color: #EEEEEE;
+    border-bottom: 2px solid #BBBBBB;
+    /*border-radius: 5px;*/
 }
 .information {
     width: 60%;
-    border-right: 1.5px solid rgba(198,231,206,1);
+    border-right: 2px solid #BBBBBB;
 }
 .rating {
     position: relative;
     top: 0;
     width: 40%;
-    border-left: 1.5px solid rgba(198,231,206,1);
 }
 .form-search {
     width: 100%;
@@ -134,6 +136,7 @@
     padding: 0 5%;
     border-style: none;
     margin: auto;
+    text-align: center !important;
 }
 .fieldset-search {
     border-style: none;

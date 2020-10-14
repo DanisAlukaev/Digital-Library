@@ -1,5 +1,5 @@
 <template>
-    <div class = "search-and-filter">
+    <div>
         <div class="form-search">
             <label :for="'search-engine'"></label>
             <b-form-input :id="'search-engine'" :type="'search'" :placeholder="'Search'" size="sm" required class="input-search"></b-form-input>
