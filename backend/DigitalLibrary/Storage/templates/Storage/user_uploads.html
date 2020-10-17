@@ -1,5 +1,6 @@
 {% extends "Storage/base.html" %}
 {% block content %}
+    <h1 class="mb-3">Uploads by {{ view.kwargs.username }} ({{ page_obj.paginator.count }}) </h1>
     {% for upload in uploads %}
         <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ upload.user.profile.image.url }}">

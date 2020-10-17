@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Upload
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.views.generic import (
     ListView,
     DetailView,
@@ -22,6 +23,18 @@ class UploadListView(ListView):
     template_name = 'Storage/home.html'
     context_object_name = 'uploads'
     ordering = ['-date']
+    paginate_by = 4
+
+
+class UserUploadListView(ListView):
+    model = Upload
+    template_name = 'Storage/user_uploads.html'
+    context_object_name = 'uploads'
+    paginate_by = 4
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Upload.objects.filter(user=user).order_by('-date')
 
 
 class UploadDetailView(DetailView):

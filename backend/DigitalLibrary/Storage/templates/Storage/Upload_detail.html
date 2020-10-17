@@ -4,7 +4,7 @@
             <img class="rounded-circle article-img" src="{{ upload.user.profile.image.url }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ upload.user }}</a>
+              <a class="mr-2" href="{% url 'User-uploads' upload.user.username %}">{{ upload.user }}</a>
               <small class="text-muted">{{ upload.date|date:"F d, Y" }}</small>
                 {% if upload.user == user %}
                     <div>
