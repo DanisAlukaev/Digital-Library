@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="digital_library-home">
                         <router-link :to="{name: 'home'}">
-                            <a class="navbar-brand mr-4">Digital Library</a>
+                            <a class="navbar-brand mr-4 header-font-size">Digital Library</a>
                         </router-link>
                     </div>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,23 +19,24 @@
                             </router-link>
                             -->
                             <router-link :to="{name: 'about'}" class="navbar_link">
-                                <a class="nav-item nav-link">About</a>
+                                <a class="nav-item nav-link header-font-size">About</a>
                             </router-link>
 
                             <router-link :to="{name: 'documentation'}" class="navbar_link">
-                                <a class="nav-item nav-link">Documentation</a>
+                                <a class="nav-item nav-link header-font-size">Documentation</a>
                             </router-link>
 
                             <router-link :to="{name: 'contacts'}" class="navbar_link">
-                                <a class="nav-item nav-link">Contacts</a>
+                                <a class="nav-item nav-link header-font-size">Contacts</a>
                             </router-link>
                         </div>
                         <div class="navbar-nav profile">
+                            <img src="../../assets/profile.png" alt="" class="avatar">
                             <router-link :to="{name: 'profile'}" class="navbar_link">
-                                <a class="nav-item nav-link">Profile</a>
+                                <a class="nav-item nav-link header-font-size">Profile</a>
                             </router-link>
                             <router-link :to="{name: 'home'}" class="navbar_link">
-                                <a class="nav-item nav-link">Logout</a>
+                                <a class="nav-item nav-link header-font-size">Logout</a>
                             </router-link>
                         </div>
                     </div>

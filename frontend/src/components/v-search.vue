@@ -1,18 +1,18 @@
 <template>
     <div>
-        <div class="form-search">
-            <label :for="'search-engine'"></label>
-            <b-form-input :id="'search-engine'" :type="'search'" :placeholder="'Search'" size="sm" required class="input-search"></b-form-input>
-            <b-button pill variant="info" class="search-button" @click="search()" size="sm">Search!</b-button>
+        <div class="search-top">
+            <div class="form-search">
+                <div class="search-block">
+                    <button class="search-icon"></button>
+                    <label for="input-search" class="label-search"></label>
+                    <input type="text" required id="input-search">
+                </div>
+                <button class="upload-icon"></button>
+            </div>
+            <div class="search-pathname">
+                <p class="pathname">Home</p>
+            </div>
         </div>
-        <!--
-        <form action = "search" method = "post" class="form-search">
-            <fieldset class="fieldset-search">
-                <input type = "text" name = "SearchRequest" placeholder="Search" required class="input-search"/>
-                <input type = "submit">
-            </fieldset>
-        </form>
-        -->
     </div>
 </template>
 

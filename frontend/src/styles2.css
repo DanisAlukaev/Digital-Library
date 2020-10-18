@@ -13,7 +13,9 @@ ul {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  /*background-color: #5f788a;*/
+  background-color: darkorange;
+  border-bottom: 2px solid #ececec;
 }
 
 .site-header .navbar-nav .nav-link {
@@ -28,7 +30,7 @@ ul {
   font-weight: 500;
 }
 .navbar {
-  height: 7vh;
+  height: 5vh;
 }
 .container{
   margin: 0 !important;
@@ -39,13 +41,13 @@ ul {
   width: 40%;
   margin: 0;
   display: flex;
-  justify-content: space-around;/*help*/
+  justify-content: flex-end;/*space-around*/
 }
 .navbar_links {
   width: 60%;
   margin: 0;
   display: flex;
-  justify-content: space-between;/*help*/
+  justify-content: flex-start;/*space-between*/
 }
 .navbar_link {
   margin: 0;
