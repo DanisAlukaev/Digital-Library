@@ -19,11 +19,10 @@
                 <p class="tab">Answers</p>
                 -->
                 <ul class="nav nav-tabs">
-                    <li class=""><a data-toggle="tab" href="#home">View results <span class="badge badge-danger " title="new/processing">18/2</span> </a></li>
-                    <li class="disabled"><a data-toggle="tab" href="#hist">History</a></li>
-                    <li class="disabled"><a data-toggle="tab" href="#stat">Statistics</a></li>
-                    <li class="disabled"><a data-toggle="tab" href="#profile">Profile</a></li>
-
+                    <li class="disabled" v-for="tab in tabs" :key="tab.course" :class="{'active': tab.active}">
+                        <a @click="activate(tab.course)">{{tab.course}}</a>
+                        <button class="close-icon" @click="closebutton(tab.course)"></button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -32,7 +31,19 @@
 
 <script>
     export default {
-        name: "v-info"
+        name: "v-info",
+        data:function(){return {
+            tabs:[{course:'FSE', active: 1},{course:'PS', active: 0},{course:'History', active: 0},{course:'DE', active: 0}]
+        }},
+        methods: {
+            closebutton(course){
+                this.tabs = this.tabs.filter((tab)=>{return course!==tab.course;});
+                if(this.tabs.length>0)this.tabs[0].active = 1;
+            },
+            activate(course){
+                this.tabs.map((tab)=>{tab.course === course? tab.active = 1 : tab.active=0;})
+            }
+        }
     }
 </script>
 
