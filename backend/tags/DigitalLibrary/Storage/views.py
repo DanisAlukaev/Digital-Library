@@ -90,13 +90,21 @@ class LazyEncoder(DjangoJSONEncoder):
         return super().default(obj)
 
 
+from datetime import date
 def search_and_filter(request):
     error = ''
     if request.method == 'POST':
         form = UploadForm(request.POST)
         if form.is_valid():
-            tags = form.cleaned_data.get('tags')
-            request.session['tags_passed'] = tags
+            search_for = form.cleaned_data.get('search_for')
+            tags_passed = form.cleaned_data.get('tags_passed')
+            date_passed = form.cleaned_data.get('date_passed')
+            request.session['search_for'] = search_for
+            request.session['tags_passed'] = tags_passed
+            if date_passed is None:
+                request.session['date_passed'] = date_passed
+            else:
+                request.session['date_passed'] = date_passed.isoformat()
             return redirect('Show_with_filters')
         else:
             error = 'Wrong form'
@@ -115,9 +123,19 @@ class UploadWithFilters(ListView):
     paginate_by = 4
 
     def get_queryset(self):
+        search_for = self.request.session.get('search_for')
         tags_passed = self.request.session.get('tags_passed')
+        if self.request.session.get('date_passed') is None:
+            date_passed = None
+        else:
+            date_passed = date.fromisoformat(self.request.session.get('date_passed'))
+
         filter_apply = Upload.objects.all()
+
+        filter_apply = filter_apply.filter(title__icontains=search_for)
         for tag in tags_passed:
             filter_apply = filter_apply.filter(tags__name=tag)
+        if date_passed is not None:
+            filter_apply = filter_apply.filter(date__date=date_passed)
         return filter_apply
 

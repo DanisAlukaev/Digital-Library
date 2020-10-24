@@ -8,10 +8,25 @@ for el in tuple(Tag.objects.values_list('name', flat=True)):
 
 
 class UploadForm(forms.Form):
-    tags = forms.MultipleChoiceField(
+    search_for = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'class': "search-field"
+            }
+        )
+    )
+    tags_passed = forms.MultipleChoiceField(
         required=False,
         widget=forms.CheckboxSelectMultiple(
             attrs={
-                'class': "filter-checkbox"}),
+                'class': "tag-checkbox"}),
         choices=DISPLAY_CHOICES,
+    )
+    date_passed = forms.DateField(
+        required=False,
+        widget=forms.SelectDateWidget(
+            attrs={
+                'class': "date-field"}
+        ),
     )
