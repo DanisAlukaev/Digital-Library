@@ -80,7 +80,7 @@
       <workItem from="1603292680965" duration="662000" />
       <workItem from="1603301500503" duration="42074000" />
       <workItem from="1603378823384" duration="279000" />
-      <workItem from="1603526806240" duration="5860000" />
+      <workItem from="1603526806240" duration="6621000" />
     </task>
     <servers />
   </component>
@@ -101,15 +101,6 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Storage/views.py</url>
-          <line>106</line>
-          <option name="timeStamp" value="23" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="Python.DjangoServer">
         <watch expression="tags" language="Python" />

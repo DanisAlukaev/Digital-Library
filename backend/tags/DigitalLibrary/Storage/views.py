@@ -1,9 +1,10 @@
 from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Upload, Tag
+from .models import Upload
 from .forms import UploadForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
+from datetime import date
 
 from django.views.generic import (
     ListView,
@@ -90,7 +91,6 @@ class LazyEncoder(DjangoJSONEncoder):
         return super().default(obj)
 
 
-from datetime import date
 def search_and_filter(request):
     error = ''
     if request.method == 'POST':
