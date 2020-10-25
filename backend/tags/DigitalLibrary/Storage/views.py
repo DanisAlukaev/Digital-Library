@@ -1,4 +1,3 @@
-from django.core.serializers.json import DjangoJSONEncoder
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Upload
 from .forms import UploadForm
@@ -82,13 +81,6 @@ class UploadDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'Storage/about.html')
-
-
-class LazyEncoder(DjangoJSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, UploadForm):
-            return str(obj)
-        return super().default(obj)
 
 
 def search_and_filter(request):
