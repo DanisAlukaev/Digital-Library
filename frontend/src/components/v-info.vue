@@ -37,8 +37,9 @@
         }},
         methods: {
             closebutton(course){
-                this.tabs = this.tabs.filter((tab)=>{return course!==tab.course;});
-                if(this.tabs.length>0)this.tabs[0].active = 1;
+                this.tabs = this.tabs.filter((tab)=>{
+                    if(course===tab.course && tab.active === 1 && this.tabs.length>0)this.tabs[0].active =1;
+                    return course!==tab.course;});
             },
             activate(course){
                 this.tabs.map((tab)=>{tab.course === course? tab.active = 1 : tab.active=0;})
