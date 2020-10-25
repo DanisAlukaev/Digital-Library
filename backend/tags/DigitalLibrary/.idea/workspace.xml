@@ -26,7 +26,7 @@
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../DigitalLibrary" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
   <component name="RunDashboard">
@@ -82,6 +82,7 @@
       <workItem from="1603378823384" duration="279000" />
       <workItem from="1603526806240" duration="6621000" />
       <workItem from="1603649059121" duration="555000" />
+      <workItem from="1603652680902" duration="23000" />
     </task>
     <servers />
   </component>
