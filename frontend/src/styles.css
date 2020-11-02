@@ -1,16 +1,18 @@
-@font-face {
+
+/*@font-face {
     src: url('./assets/electra/Elektra Text Pro обычный.eot');
     font-family: 'electra';
     src: url('./assets/electra/Elektra Text Pro обычный.otf');
-}
+}*/
 *{
     margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'electra';
+    /*font-family: 'electra';*/
+    font-family: Candara;
     font-size: 14px;
     text-decoration: none;
-    color: #777777;
+    color: #3b3b3b;
     text-align: left;
     position: relative;
 }
@@ -32,10 +34,32 @@
     position: fixed;
     top: 0;
     width: 100%;
-    /*background-color: #1a428a;*/
+    background-color: #ffa854
  }
 .header-font-size {
     font-size: 16px !important;
+}
+.no-outline, .no-outline:active , .no-outline:focus {
+    outline: none;
+}
+.dropdown-profile {
+    width: 21vh;
+    border: 2px solid #9b9b9b;
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    z-index: 1;
+}
+.dropdown-search {
+    width: 55vh;
+    height: 41vh;
+    border: 2px solid #9b9b9b;
+    display: none;
+    position: absolute;
+    top: 3vh;
+    left: -5vh;
+    background-color: #ffffff;
+    z-index: 1;
 }
 .v-footer {
     width: 100%;
@@ -81,26 +105,64 @@
     height: 30%;
     width: 100%;
 }
-.pathname {
-    margin: 0 0 0 5%;
+.list-item {
+    height: 4vh;
+    margin: 0 5% 0 5%;
+    cursor: pointer;
+    border-bottom: 1px solid #9b9b9b;
+}
+.list-item-last {
+    height: 4vh;
+    margin: 0 5% 0 5%;
+    cursor: pointer;
+}
+.list-item-text {
+    position: absolute;
+    left: 2.5vh;
+    top: 0;
+    margin: 0;
+    font-size: 16px;
+    color: #5b5b5b;
+}
+.list-item-search {
+    height: 10vh;
+    margin: 0 5% 0 5%;
+    cursor: pointer;
+    border-bottom: 1px solid #9b9b9b;
+}
+.list-item-search-last {
+    height: 10vh;
+    margin: 0 5% 0 5%;
+    cursor: pointer;
+}
+.list-item-text-search {
+    margin: 0;
+    font-size: 16px;
+    color: #5b5b5b;
+}
+.list-item-text-search-bold {
+    font-weight: bold;
+    margin: 0;
+    font-size: 16px;
+    color: #5b5b5b;
 }
 .v-info {
     height: 100%;
-    display: flex;
+    display: block;
     position: relative;
     left: 0;
-    width: 80%;
+    width: 100%;
     background-color: #EEEEEE;
 }
 .v-home {
-    height: 92vh;
-    display: block;
+    height: 95vh;
+    display: inline;
     position: relative;
     top: 5vh;
     overflow: hidden;
 }
 .v-list {
-    width: 20%;
+    width: 100%;
     display: flex;
     position: relative;
     top: 0;
@@ -108,11 +170,10 @@
     margin: 0;
     background-color: #EEEEEE;
     height: 100%;
-    border-right: 2px solid #DDDDDD;
-    /*border-radius: 5px;*/
+    /*border-right: 2px solid #DDDDDD;*/
 }
 .v-content {
-    height: 100%;
+    height: 96%;
     display: flex;
     width: 80%;
     position: relative;
@@ -120,15 +181,21 @@
     top: 0;
     margin: 0;
 }
-.top {
-    display: flex;
-    height: 9vh;
+.right-block {
+    height: 95vh;
+    width: 85%;
+    margin: 0;
+    float: right;
+    display: block;
 }
-.center {
+.left-block {
+    margin: 0;
+    width: 15%;
+    height: 95vh;
     display: flex;
     position: relative;
     top: 0;
-    height: calc(100% - 9vh - 3px);
+    float: left;
 }
 .tab {
     margin: 0;
@@ -140,7 +207,7 @@
 }
 
 .info-top {
-    /*border-bottom: 2px solid #DDDDDD;*/
+    height: 4%;
     width: 100%;
     display: block;
 }
@@ -153,16 +220,15 @@
 }
 .info-tabs {
     position: relative;
-    height: 30%;
+    height: 100%;
     width: 100%;
     display: inline-flex;
 }
 .form-search {
-    width: 100%;
-    height: 70%;
+    width: 95%;
+    height: 100%;
     padding-left: 2.5%;
     margin: 0;
-    border-bottom: 2px solid #DDDDDD;
     text-align: left !important;
     display: inline-flex;
 }
@@ -177,19 +243,20 @@
     height: 100%;
     text-align: left;
     width: 60%;
-    background-color: inherit;
+    background-color: rgba(256,256,256, 0);
     color: #444444;
     border: none;
     margin: 0;
 }
 .search-block {
     width: 90%;
-    height: 60%;
-    margin: auto 1vh auto 0vh;
-    border-width: 2px;
-    border-color: #DDDDDD;
+    height: 3vh;
+    margin: auto 1vh auto 0;
+    border-width: 1px;
+    border-color: #d0ae8e;
+    background-color: rgba(256,256,256,0.75);
     border-style: solid;
-    border-radius: 2vh;
+    border-radius: 0.75vh;
     display: inline-flex;
 }
 .label-search {
@@ -197,11 +264,12 @@
 }
 .search-icon, .search-icon:active, .search-icon:focus {
     width: 2vh;
+    height: 2vh;
     outline: none;
-    height: 100%;
     -webkit-mask-position-y: 50%;
     -webkit-mask-position-x: 50%;
     position: relative;
+    top: 0.25vh;
     border-style: none;
     background-color: #999999;
     -webkit-mask: url("../node_modules/bootstrap-icons/icons/search.svg") no-repeat 100%;
@@ -215,10 +283,25 @@
     margin: auto 2.5% auto 0;
     width: 4vh;
     height: 4vh;
-    background-color: #999999;
+    background-color: #ffffff;
     background-size: 100%;
     -webkit-mask: url("../node_modules/bootstrap-icons/icons/cloud-plus-fill.svg") no-repeat 100%;
     mask: url("../node_modules/bootstrap-icons/icons/cloud-plus-fill.svg") no-repeat 100%;
+    -webkit-mask-position-x: 50%;
+    -webkit-mask-position-y: 50%;
+}
+.comments-icon {
+    width: 5vh;
+    height: 5vh;
+    outline: none;
+    position: relative;
+    top: 0.5vh;
+    margin: 0 0 0 0;
+    border: none;
+    background-color: #ffffff;
+    background-size: 100%;
+    -webkit-mask: url("../node_modules/bootstrap-icons/icons/chat-right-text.svg") no-repeat 100%;
+    mask: url("../node_modules/bootstrap-icons/icons/chat-right-text.svg") no-repeat 100%;
     -webkit-mask-position-x: 50%;
     -webkit-mask-position-y: 50%;
 }
@@ -232,23 +315,9 @@
     width: 9vh;
     height: 4vh;
 }
-.list-info {
-    height: 3vh;
-    width: 100%;
-    display: inline-flex;
-    border-bottom: 2px solid #DDDDDD;
-}
 .list-wrapper {
     margin: 0;
     width: 100%;
-}
-.list-info-title {
-    width: 40%;
-    margin: 0 5%;
-}
-.list-info-sort {
-    width: 40%;
-    margin: 0 5%;
 }
 .avatar {
     height: 4.7vh;
@@ -261,8 +330,8 @@
     position: relative;
     border: none;
     margin: auto 2.5% auto 0;
-    width: 2vh;
-    height: 2vh;
+    width: 3vh;
+    height: 3vh;
     background-color: #999999;
     background-size: 100%;
     -webkit-mask: url("../node_modules/bootstrap-icons/icons/x.svg") no-repeat 100%;

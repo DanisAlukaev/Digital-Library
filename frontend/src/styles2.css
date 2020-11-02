@@ -1,25 +1,5 @@
 body {
   background: #fafafa;
-  color: #333333;
-  margin-top: 5rem;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  color: #444444;
-}
-
-ul {
-  margin: 0;
-}
-
-.bg-steel {
-  /*background-color: #5f788a;*/
-  background-color: darkorange;
-  border-bottom: 2px solid #ececec;
-}
-
-.site-header .navbar-nav .nav-link {
-  color: #cbd5db;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -32,25 +12,36 @@ ul {
 .navbar {
   height: 5vh;
 }
+.name-profile {
+    margin: 0;
+    cursor: pointer;
+    display: inline-block;
+}
+.name-profile:hover .dropdown-profile {
+    display: block;
+}
+.search-block:hover .dropdown-search {
+    display: block;
+}
 .container{
   margin: 0 !important;
   width: 100% !important;
   max-width: none !important;
 }
 .profile {
-  width: 40%;
+  width: 100%;
   margin: 0;
-  display: flex;
-  justify-content: flex-end;/*space-around*/
+  justify-content: flex-end;
 }
 .navbar_links {
   width: 60%;
   margin: 0;
   display: flex;
-  justify-content: flex-start;/*space-between*/
+  justify-content: flex-start;
 }
 .navbar_link {
   margin: 0;
+  position: relative;
 }
 .digital_library-home {
   width: 20%;
@@ -58,7 +49,9 @@ ul {
 
 .nav-tabs {
     border: none !important;
+    cursor: pointer;
 	color: #333;
+    margin: 0;
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
 	display: inline-flex !important;
     justify-content: left;
@@ -85,10 +78,10 @@ ul {
 .nav>li {
     border-radius: 0;
 	float: left;
-    width: 7vh;
+    width: 11vh;
     padding: 0;
 	margin-bottom: 0;
-    margin-left: 0vh;
+    margin-left: 0;
     margin-right: 1vh;
 	position: relative;
 	display: inline-flex;
