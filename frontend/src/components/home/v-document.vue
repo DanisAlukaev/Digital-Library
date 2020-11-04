@@ -23,6 +23,10 @@
                             </div>
                         </div>
                     </div>
+                    <div class="comments-add-block">
+                        <textarea rows="5" placeholder="Add a comment" class="comments-add"></textarea>
+                        <button class="comments-add-button"></button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -60,6 +64,8 @@
         },
         methods: {
             dropdownComments(){
+                if(!this.dropdown)document.querySelector(".rating").style.borderBottomLeftRadius = 0;
+                else document.querySelector(".rating").style.borderBottomLeftRadius = "2vh";
                 this.dropdown = !this.dropdown;
             },
             changeScale(scale){
@@ -120,6 +126,33 @@
 </script>
 
 <style scoped>
+    .comments-add-button {
+        position: absolute;
+        top: 1vh;
+        margin: 0 0 0 1vh;
+		outline: none;
+        width: 3.5vh;
+        height: 3.5vh;
+        border: none;
+        background-color: #5b5b5b;
+        background-size: 100%;
+        -webkit-mask-position-x: 50%;
+        -webkit-mask-position-y: 50%;
+        -webkit-mask: url("../../../node_modules/bootstrap-icons/icons/arrow-right-circle-fill.svg") no-repeat 100%;
+        mask: url("../../../node_modules/bootstrap-icons/icons/arrow-right-circle-fill.svg") no-repeat 100%;
+    }
+    .comments-add {
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: none;
+    }
+    .comments-add-block {
+        width: calc(90% - 3vh);
+        background-color: #ffffff;
+        height: 10vh;
+        margin: 1.5vh;
+    }
     .comment-avatar {
         width: 15%;
         position: absolute;
@@ -144,7 +177,7 @@
         position: relative;
     }
     .comments {
-        height: 80vh;
+        height: 65vh;
         overflow: auto;
         background-color: #ffffff;
         margin: 1.5vh;

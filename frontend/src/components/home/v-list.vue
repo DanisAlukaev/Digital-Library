@@ -11,6 +11,11 @@
                 <p class="list-item-text">{{doc.name}}</p>
             </div>
     </div>
+        <div class="navigation-bottom">
+            <router-link :to="{name: 'about_us'}" class="navigation-bottom-link">About us</router-link>
+            <router-link :to="{name: 'documentation'}" class="navigation-bottom-link">Documentation</router-link>
+            <router-link :to="{name: 'contacts'}" class="navigation-bottom-link">Contacts</router-link>
+        </div>
     </div>
 </template>
 
@@ -30,6 +35,10 @@
 </script>
 
 <style scoped>
+    .navigation-bottom-link {
+        padding: 0.5vh;
+        text-decoration: none;
+    }
     .list-item-icon {
         position: absolute;
         margin: 0;
@@ -61,5 +70,10 @@
     .list-item-icon-folder {
         -webkit-mask: url("../../../node_modules/bootstrap-icons/icons/folder2.svg") no-repeat 100%;
         mask: url("../../../node_modules/bootstrap-icons/icons/folder2.svg") no-repeat 100%;
+    }
+    .navigation-bottom {
+        display: block;
+        height: 5vh;
+        width: 100%;
     }
 </style>
