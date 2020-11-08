@@ -1,32 +1,25 @@
 <template>
     <div class="v-home">
-        <div class="top">
-            <v-search class="v-search"></v-search>
-            <v-info class="v-info"></v-info>
-        </div>
-        <div class="center">
+        <div class="left-block">
             <v-list class="v-list"></v-list>
-            <v-content class="v-content"></v-content>
+        </div>
+        <div class="right-block">
+            <v-info class="v-info"></v-info>
         </div>
     </div>
 
 </template>
 
 <script>
-    import vSearch from './v-search';
-    import vInfo from './v-info';
-    import vContent from './v-content';
-    import vList from './v-list';
+    import vInfo from './home/v-info';
+    import vList from './home/v-list';
     export default {
         name: "v-home",
         components: {
-            vSearch,
             vInfo,
-            vContent,
             vList
         }
     }
 </script>
-
 <style scoped>
 </style>
