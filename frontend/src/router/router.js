@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import vHome from '../components/v-home';
+import vAuth from '../components/v-authentication'
 Vue.use(Router);
 let routes = [{
         name: "home",
@@ -20,8 +21,9 @@ let routes = [{
         path: "/contacts"
     },
     {
-        name: "account",
-        path: "/account"
+        name: "auth",
+        path: "/auth",
+        component: vAuth
     },
     {
         name: "catchAll",

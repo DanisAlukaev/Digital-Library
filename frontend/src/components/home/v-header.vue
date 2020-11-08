@@ -49,7 +49,7 @@
                                 {{name}}
                                 <div class="dropdown-profile">
                                     <div class="list-item">
-                                        <p class="list-item-text">My account</p>
+                                        <p class="list-item-text"><router-link :to="{name: 'auth'}">My account</router-link></p>
                                     </div>
                                     <div class="list-item-last">
                                         <p class="list-item-text">Log out</p>
