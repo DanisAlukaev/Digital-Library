@@ -1,0 +1,24 @@
+Open shell:
+python manage.py shell
+
+Within the shell:
+from Storage.models import Upload
+from django.contrib.auth.models import User
+
+User.objects.all()
+Upload.objects.all()
+
+Find entry:
+user = User.objects.filter(username='DanisAlukaev').first()
+user
+
+Create new entries:
+upload_2 = Upload(title='Video#2', content='Another cool video with cat',user=user)
+upload_2.save()
+
+Add associated entry:
+user.upload_set
+user.upload_set.all()
+user.upload_set.create(title='Video#3', content='Third cool video with cat')
+
+exit()
