@@ -2,11 +2,20 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import vHome from '../components/v-home';
 import vAuth from '../components/v-authentication'
+import store from '../vuex/store';
 Vue.use(Router);
 let routes = [{
         name: "home",
         path: "/",
         component: vHome
+    },
+    {
+        name: "profile",
+        path: "/profile",
+        beforeEnter(to, from, next){
+            if(store.state.idToken)next();
+            else next('./auth');
+        }
     },
     {
         name: "documentation",
@@ -23,7 +32,7 @@ let routes = [{
     {
         name: "auth",
         path: "/auth",
-        component: vAuth
+        component: vAuth,
     },
     {
         name: "catchAll",

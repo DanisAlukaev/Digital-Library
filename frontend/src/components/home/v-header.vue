@@ -3,6 +3,7 @@
         <header class="site-header">
             <nav class="navbar navbar-expand-md navbar-dark fixed-top">
                 <div class="container">
+                    <button class="upload-icon"></button>
                     <div class="digital_library-home">
                         <router-link :to="{name: 'home'}">
                             <a class="navbar-brand mr-4 header-font-size no-outline">Digital Library</a>
@@ -42,7 +43,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button class="upload-icon"></button>
+                            <!--<button class="upload-icon"></button>-->
                         </div>
                         <div class="navbar-nav profile">
                             <div class="name-profile nav-link header-font-size">

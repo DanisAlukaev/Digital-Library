@@ -30,8 +30,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="pdf-document">
             <canvas id="the-canvas"></canvas>
         </div>
@@ -40,27 +38,30 @@
 
 <script>
     import * as pdfjsLib from 'pdfjs-dist';
+    import {mapState} from 'vuex';
     export default {
         name: "v-content",
-        components: {
-        },
         data: function(){
             return {
-                comments: [{text: "What is 2+2?", sender: "12k club member"},
-                    {text: "You should know it from the school. If the question was what is pi, some people would argue that it is 4 or 3, but to answer your question it is obviously 4.", sender: "Professor Gorodetskiy"},
-                    {text: "2+2=pi", sender: "36k club member"},
-                    {text: "22", sender: "JavaScript"}],
                 dropdown: false,
-                rating: 3.5,
+                scale: 1,
                 pdf: undefined,
                 pages: [],
                 pageRendering: false,
                 pageNumPending: null,
+                pageMax: 1,
                 pageNum: 1,
-                pageMax: undefined,
-                url: 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf',
-                scale: 1
             }
+        },
+        computed:{
+            ...mapState({doc:'currentDoc'}),
+            //url:this.$store.state.currentDoc.url,
+            url:function(){
+                return this.doc.url || "";
+            },
+            comments:function(){return this.doc.comments || [];},
+            rating:function(){return this.doc.rating || undefined;},
+            //pageNum:function(){return this.doc.pageNum || 1;}
         },
         methods: {
             dropdownComments(){
@@ -75,8 +76,13 @@
                 this.renderPage(this.pageNum);
             },
             fetchPDF() {
-                pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
+                console.log(this.url);
+                pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;//change location
                 pdfjsLib.getDocument(this.url).promise.then((pdf) => {
+                    //console.log(this.url + "\n");
+                    //console.log(this.oldurl + "\n");
+                    if(this.pdf)this.pdf.destroy();
+                    //this.oldurl = this.url;
                     this.pdf = pdf;
                     this.pageMax = this.pdf.numPages;
                     this.renderPage(this.pageNum);
@@ -115,11 +121,12 @@
             },
             onNextPage(){
                 if (this.pageNum >= this.pageMax)return;
+                //this.$store.state.currentDoc.pageNum++;
                 this.pageNum++;
                 this.queueRenderPage(this.pageNum);
             }
         },
-        created() {
+        updated() {
             this.fetchPDF();
         }
     }
@@ -243,22 +250,26 @@
     }
     .prev-button, .next-button {
         position: relative;
+        left: 0;
         top: 1vh;
         width: 4vh;
         height: 4vh;
         border: none;
         background-color: #ffffff;
         background-size: 100%;
-        -webkit-mask-position-x: 50%;
-        -webkit-mask-position-y: 50%;
     }
     .prev-button {
         -webkit-mask: url("../../../node_modules/bootstrap-icons/icons/chevron-left.svg") no-repeat 100%;
         mask: url("../../../node_modules/bootstrap-icons/icons/chevron-left.svg") no-repeat 100%;
+        -webkit-mask-position-x: 50%;
+        -webkit-mask-position-y: 50%;
+        left: 0.3vh;
     }
     .next-button {
         -webkit-mask: url("../../../node_modules/bootstrap-icons/icons/chevron-right.svg") no-repeat 100%;
         mask: url("../../../node_modules/bootstrap-icons/icons/chevron-right.svg") no-repeat 100%;
+        -webkit-mask-position-x: 50%;
+        -webkit-mask-position-y: 50%;
     }
     .page-control-text {
         color: #ffffff;

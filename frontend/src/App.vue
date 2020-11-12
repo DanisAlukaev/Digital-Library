@@ -9,7 +9,11 @@ export default {
   name: 'App',
   components: {
     vWrapper
-  }
+  },
+    created() {
+      this.$store.dispatch('fetchUser');
+      this.$store.dispatch('tryAutoLogin');
+    }
 }
 </script>
 

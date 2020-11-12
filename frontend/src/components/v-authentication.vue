@@ -1,35 +1,28 @@
 <template>
     <div>
-    {% extends "Storage/base.html" %}
-    {% load crispy_forms_tags %}
-    {% block content %}
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                {{ form|crispy }}
-            </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
-                <small class="text-muted ml-2">
-                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
-                </small>
-            </div>
-        </form>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up now</a>
-            </small>
-        </div>
-    </div>
-    {% endblock content%}
     </div>
 </template>
 
 <script>
     export default {
-        name: "v-authentication"
+        name: "v-authentication",
+        data: function(){
+            return {
+                email:"",
+                password:"",
+                confirmPassword:""
+            };
+        },
+        methods:{
+            onSubmit(){
+                if(this.password !== this.confirmPassword)return;//todo write to user that he need to check password
+                let authData = {
+                    email: this.email,
+                    password: this.password,
+                };
+                this.$store.dispatch("signup", authData);
+            }
+        }
     }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="list-wrapper">
-            <div class="list-item" @click="openItem()" v-for="doc in documents" :key="doc.name">
+            <div class="list-item" @click="openItem(doc)" v-for="doc in documents" :key="doc.name">
                 <div class="list-item-icon" :class="{
                     'list-item-icon-document': doc.type ==='document',
                     'list-item-icon-video': doc.type ==='video',
@@ -20,16 +20,24 @@
 </template>
 
 <script>
+    import {mapState, mapActions} from 'vuex';
     export default {
         name: "v-list",
         methods: {
-            openItem(){
-            }
+            openItem(doc){
+                this.open(doc);
+                if(this.openedDocuments.length === 1)this.active(this.openedDocuments[0].name);
+            },
+            ...mapActions({open:"openDocument", active: "activateTab"})
+        },
+        computed: {
+            ...mapState([
+                'documents',
+                'openedDocuments'
+            ])
         },
         data:function () {
-            return {
-                documents:[{name:"ProbStat", type: "document"}, {name:"FSE", type: "document"}, {name:"DE", type: "document"}]
-            }
+            return {}
         }
     }
 </script>

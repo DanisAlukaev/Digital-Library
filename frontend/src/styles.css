@@ -242,7 +242,7 @@
     left: 1vh;
     height: 100%;
     text-align: left;
-    width: 60%;
+    width: 80%;
     background-color: rgba(256,256,256, 0);
     color: #444444;
     border: none;
@@ -256,7 +256,7 @@
     border-color: #d0ae8e;
     background-color: rgba(256,256,256,0.75);
     border-style: solid;
-    border-radius: 0.75vh;
+    border-radius: 1.5vh;
     display: inline-flex;
 }
 .label-search {
@@ -280,28 +280,29 @@
     outline: none;
     position: relative;
     border: none;
-    margin: auto 2.5% auto 0;
-    width: 4vh;
-    height: 4vh;
+    margin: 1vh 1% 1vh 0;
+    width: 3vh;
+    height: 3vh;
     background-color: #ffffff;
     background-size: 100%;
-    -webkit-mask: url("../node_modules/bootstrap-icons/icons/cloud-plus-fill.svg") no-repeat 100%;
-    mask: url("../node_modules/bootstrap-icons/icons/cloud-plus-fill.svg") no-repeat 100%;
+    -webkit-mask: url("../node_modules/bootstrap-icons/icons/list.svg") no-repeat 100%;
+    mask: url("../node_modules/bootstrap-icons/icons/list.svg") no-repeat 100%;
     -webkit-mask-position-x: 50%;
     -webkit-mask-position-y: 50%;
+    cursor:none
 }
 .comments-icon {
-    width: 5vh;
-    height: 5vh;
+    width: 3vh;
+    height: 3vh;
     outline: none;
     position: relative;
-    top: 0.5vh;
+    top: 1.5vh;
     margin: 0 0 0 0;
     border: none;
     background-color: #ffffff;
     background-size: 100%;
-    -webkit-mask: url("../node_modules/bootstrap-icons/icons/chat-right-text.svg") no-repeat 100%;
-    mask: url("../node_modules/bootstrap-icons/icons/chat-right-text.svg") no-repeat 100%;
+    -webkit-mask: url("../node_modules/bootstrap-icons/icons/chat-right-text-fill.svg") no-repeat 100%;
+    mask: url("../node_modules/bootstrap-icons/icons/chat-right-text-fill.svg") no-repeat 100%;
     -webkit-mask-position-x: 50%;
     -webkit-mask-position-y: 50%;
 }
