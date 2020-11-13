@@ -12,14 +12,14 @@ from rest_framework.decorators import api_view
 Available requests:
 
 Methods	    Urls	                Actions
-GET	        api/uploads	            get all Uploads
-GET	        api/uploads/:id	        get Uploads by id
-POST	    api/uploads	            add new Uploads
-PUT	        api/uploads/:id	        update Uploads by id
-DELETE	    api/uploads/:id	        remove Uploads by id
-DELETE	    api/uploads	            remove all Uploads
-GET	        api/uploads/published	find all published Uploads
-GET	        api/uploads?title=[kw]	find all Uploads which title contains 'kw'
+GET         api/uploads             get all Uploads
+GET         api/uploads/:id         get Uploads by id
+POST        api/uploads             add new Uploads
+PUT         api/uploads/:id         update Uploads by id
+DELETE      api/uploads/:id         remove Uploads by id
+DELETE      api/uploads             remove all Uploads
+GET         api/uploads/published   find all published Uploads
+GET         api/uploads?title=[kw]  find all Uploads which title contains 'kw'
 """
 
 
