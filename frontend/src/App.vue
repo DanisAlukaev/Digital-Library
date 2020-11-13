@@ -1,14 +1,25 @@
 <template>
   <div id="app">
-      <v-wrapper></v-wrapper>
+    {{ uploads }}
   </div>
 </template>
 
-<script>import vWrapper from './components/v-wrapper';
+<script>
+import axios from 'axios'
+
 export default {
   name: 'App',
+  data: () => ({
+    uploads: []
+  }),
   components: {
-    vWrapper
+  },
+  mounted () {
+    axios.post('http://localhost:8000/api/uploads/', {
+            title: 'Test Uploading',
+            description: 'Vue.js integration test'
+        });
+    axios.get('http://localhost:8000/api/uploads/').then((response) => {this.uploads = response.data})
   }
 }
 </script>
@@ -20,7 +31,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-    height: 100%;
-    width: 100%;
+  margin-top: 60px;
 }
 </style>
