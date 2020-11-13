@@ -1,6 +1,5 @@
-from .models import Tag
+from .models import Tag, Upload
 from django import forms
-
 
 DISPLAY_CHOICES = list()
 for el in tuple(Tag.objects.values_list('name', flat=True)):
@@ -30,3 +29,16 @@ class UploadForm(forms.Form):
                 'class': "date-field"}
         ),
     )
+
+
+class SharingRequestForm(forms.Form):
+    resolution = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={
+                'class': "form-check form-check-inline",
+                # 'onchange': 'submit()',
+            }
+        ),
+        choices=[("approved", "Approve"), ("declined", "Decline")],
+    )
+

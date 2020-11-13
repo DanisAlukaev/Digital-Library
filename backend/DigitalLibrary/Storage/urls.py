@@ -7,6 +7,7 @@ from .views import (
     UploadDeleteView,
     UserUploadListView,
     UploadWithFilters,
+    ModeratePage,
 )
 from . import views
 
@@ -19,5 +20,6 @@ urlpatterns = [
     path('content/<int:pk>/delete/', UploadDeleteView.as_view(), name='Content-delete'),
     path('about/', views.about, name='Storage-about'),
     path('search_and_filter/', views.search_and_filter, name='Search_and_filter'),
-    path('show_with_filters', UploadWithFilters.as_view(), name="Show_with_filters")
+    path('show_with_filters', UploadWithFilters.as_view(), name="Show_with_filters"),
+    path('moderate', ModeratePage.as_view(), name="Moderate"),
 ]

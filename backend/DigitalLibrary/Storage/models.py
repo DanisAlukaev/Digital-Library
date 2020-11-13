@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -17,6 +18,16 @@ class Upload(models.Model):
     date = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, help_text="Select the tags")
+    Status = models.IntegerField()
+    # 0
+    # stands
+    # for rejected;
+    # 1
+    # stands
+    # for approved;
+    # 2
+    # stands
+    # for pending.
 
     def __str__(self):
         return self.title

@@ -1,16 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Upload
-from .forms import UploadForm
+from .forms import UploadForm, SharingRequestForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from datetime import date
+from django.views.generic.edit import FormMixin
 
 from django.views.generic import (
     ListView,
     DetailView,
     CreateView,
     UpdateView,
-    DeleteView
+    DeleteView,
 )
 
 
@@ -27,6 +28,9 @@ class UploadListView(ListView):
     context_object_name = 'uploads'
     ordering = ['-date']
     paginate_by = 4
+
+    def get_queryset(self):
+        return Upload.objects.filter(Status=1)
 
 
 class UserUploadListView(ListView):
@@ -122,7 +126,7 @@ class UploadWithFilters(ListView):
         else:
             date_passed = date.fromisoformat(self.request.session.get('date_passed'))
 
-        filter_apply = Upload.objects.all()
+        filter_apply = Upload.objects.filter(Status=1)
 
         filter_apply = filter_apply.filter(title__icontains=search_for)
         for tag in tags_passed:
@@ -130,3 +134,26 @@ class UploadWithFilters(ListView):
         if date_passed is not None:
             filter_apply = filter_apply.filter(date__date=date_passed)
         return filter_apply
+
+
+class ModeratePage(ListView, FormMixin):
+    template_name = 'Storage/ModeratePage.html'
+    context_object_name = 'uploads'
+
+    def get_queryset(self):
+        return Upload.objects.filter(Status=2)
+    form_class = SharingRequestForm
+
+    def post(self, request, *args, **kwargs):
+        for upload in self.get_queryset():
+            if str(upload.pk)+' ' in self.request.POST:
+                form = self.get_form()
+                if form.is_valid():
+                    resolution = form.cleaned_data.get('resolution')
+                    if resolution == "approved":
+                        upload.Status = 1
+                    else:
+                        upload.Status = 0
+                    upload.save()
+                break
+        return redirect('Moderate')
