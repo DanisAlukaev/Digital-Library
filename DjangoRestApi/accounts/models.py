@@ -8,15 +8,18 @@ class UserManager(BaseUserManager):
         user.set_password(password)
         user.role = '2'
         user.is_staff = False
+        user.is_active = True
         user.is_superuser = False
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, first_name, last_name, password):
         user = self.model(email=email, first_name=first_name, last_name=last_name, password=password)
+        user.set_password(password)
         user.is_active = True
         user.role = '0'
         user.is_staff = True
+        user.is_active = True
         user.is_superuser = True
         user.save(using=self._db)
         return user
@@ -36,6 +39,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                             default='2'
                             )
     is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     REQUIRED_FIELDS = ['first_name', 'last_name']
     USERNAME_FIELD = 'email'
 
