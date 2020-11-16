@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Upload
-from .forms import UploadForm
+from .models import Upload, Comment
+from .forms import UploadForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from datetime import date
@@ -17,6 +17,7 @@ from django.views.generic import (
 def home(request):
     context = {
         'uploads': Upload.objects.all(),
+        'comment_form': CommentForm,
     }
     return render(request, 'Storage/home.html', context)
 
@@ -43,10 +44,30 @@ class UserUploadListView(ListView):
 class UploadDetailView(DetailView):
     model = Upload
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        comments_connected = Comment.objects.filter(
+            content_connected=self.get_object()).order_by('date_posted')
+        data['comments'] = comments_connected
+        data['comment_form'] = CommentForm()
+        print(str(data['comment_form']))
+
+        return data
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('content') is None:
+            pass # TODO: error
+        new_comment = Comment(content=request.POST.get('content'),
+                              author=self.request.user,
+                              content_connected=self.get_object())
+        new_comment.save()
+        return self.get(self, request, *args, **kwargs)
+
 
 class UploadCreateView(LoginRequiredMixin, CreateView):
     model = Upload
-    fields = ['title', 'content', 'document','tags']
+    fields = ['title', 'content', 'document', 'tags']
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -55,7 +76,7 @@ class UploadCreateView(LoginRequiredMixin, CreateView):
 
 class UploadUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Upload
-    fields = ['title', 'content','document','tags']
+    fields = ['title', 'content', 'document', 'tags']
 
     def form_valid(self, form):
         form.instance.user = self.request.user
