@@ -24,3 +24,18 @@ class Upload(models.Model):
 
     def get_absolute_url(self):
         return reverse('Content-detail', kwargs={'pk': self.pk})
+
+
+class Comment(models.Model):
+    content_connected = models.ForeignKey(
+        Upload, related_name='comments', on_delete=models.CASCADE)
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+
+    def number_of_comments(self):
+        return Comment.objects.filter(content_connected=self).count()
+
+    def __str__(self):
+        return 'Comment by {} on {}'.forms(self.author.username, self.content_connected.title)

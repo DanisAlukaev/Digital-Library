@@ -1,4 +1,4 @@
-from .models import Tag
+from .models import Tag,Comment
 from django import forms
 
 
@@ -30,3 +30,9 @@ class UploadForm(forms.Form):
                 'class': "date-field"}
         ),
     )
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
