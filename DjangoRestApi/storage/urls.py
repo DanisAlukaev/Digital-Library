@@ -11,10 +11,6 @@ CONTENT.
 
 TAGS.
 /api/tags/: GET
-
-ThematicPages.
-/api/ThematicPages: GET, POST, DELETE
-/api/ThematicPages/:id GET, PUT, DELETE
 """
 
 urlpatterns = [
