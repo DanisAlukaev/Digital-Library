@@ -4,8 +4,8 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 
-from storage.models import Upload
-from storage.serializers import UploadSerializer
+from storage.models import Upload, Tag
+from storage.serializers import UploadSerializer, TagSerializer
 from rest_framework.decorators import api_view
 
 """
@@ -17,8 +17,13 @@ POST        api/uploads             add new Uploads
 PUT         api/uploads/:id         update Uploads by id
 DELETE      api/uploads/:id         remove Uploads by id
 DELETE      api/uploads             remove all Uploads
+
+
 GET         api/uploads/published   find all published Uploads
 GET         api/uploads?title=[kw]  find all Uploads which title contains 'kw'
+
+
+GET         api/tags                get all tags
 """
 
 
@@ -49,7 +54,7 @@ def upload_list(request):
         upload_serializer = UploadSerializer(data=upload_data)
         if upload_serializer.is_valid():
             # Save new instance
-            upload_serializer.save()
+            upload_serializer.save(user=request.user)
             # Notify that the creation was successful
             return JsonResponse(upload_serializer.data, status=status.HTTP_201_CREATED)
         # Notify that the creation was not successful :(
@@ -87,7 +92,7 @@ def upload_detail(request, pk):
         upload_serializer = UploadSerializer(upload, data=upload_data)
         if upload_serializer.is_valid():
             # Update data of upload
-            upload_serializer.save()
+            upload_serializer.save(user=request.user)
             # Return new data
             return JsonResponse(upload_serializer.data)
         # Something was wrong :(
@@ -102,9 +107,9 @@ def upload_detail(request, pk):
 
 
 @api_view(['GET'])
-def upload_list_published(request):
+def upload_status(request):
     # Retrieve all published uploads from database
-    uploads = Upload.objects.filter(published=True)
+    uploads = Upload.objects.filter(status=1)
 
     # GET request
     if request.method == 'GET':
@@ -112,3 +117,15 @@ def upload_list_published(request):
         uploads_serializer = UploadSerializer(uploads, many=True)
         # Return serialized instances
         return JsonResponse(uploads_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def tag_list(request):
+    # GET request
+    if request.method == 'GET':
+        # Retrieve all entries from database
+        tags = Tag.objects.all()
+        # Serialize tags
+        tags_serializer = TagSerializer(tags, many=True)
+        # Return serialized instances ('safe=False' for objects serialization)
+        return JsonResponse(tags_serializer.data, safe=False)
