@@ -5,7 +5,7 @@ from accounts.models import User
 
 
 class ThematicPage(models.Model):
-    name = models.CharField(max_length=200, help_text="Enter the name for thematic page")
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name

@@ -21,7 +21,8 @@ class UploadSerializer(serializers.ModelSerializer):
                   'status',
                   'innopoints',
                   'tags',
-                  'link')
+                  'link',
+                  'thematic_page')
         extra_kwargs = {'user': {'required': False}}
 
 

@@ -10,20 +10,20 @@ from rest_framework.decorators import api_view
 
 """
 Available requests:
-Methods	    Urls                    Actions
-GET         api/uploads             get all Uploads
-GET         api/uploads/:id         get Uploads by id
-POST        api/uploads             add new Uploads
-PUT         api/uploads/:id         update Uploads by id
-DELETE      api/uploads/:id         remove Uploads by id
-DELETE      api/uploads             remove all Uploads
+Methods	    Urls                          Actions
+GET         api/uploads                   get all Uploads
+GET         api/uploads/:id               get Uploads by id
+POST        api/uploads                   add new Uploads
+PUT         api/uploads/:id               update Uploads by id
+DELETE      api/uploads/:id               remove Uploads by id
+DELETE      api/uploads                   remove all Uploads
 
 
-GET         api/uploads/published   find all published Uploads
-GET         api/uploads?title=[kw]  find all Uploads which title contains 'kw'
+GET         api/uploads/published         find all published Uploads
+GET         api/uploads?title=[kw]        find all Uploads which title contains 'kw'
 
 
-GET         api/tags                get all tags
+GET         api/tags                      get all tags
 
 GET         api/ThematicPages             get all ThematicPages
 GET         api/ThematicPages/:page_name  get Thematic Pages by id
@@ -165,7 +165,7 @@ def thematic_page_list(request):
         thematic_page_serializer = ThematicPageSerializer(data=thematic_page_data)
         if thematic_page_serializer.is_valid():
             # Save new instance
-            thematic_page_serializer.save(user=request.user)
+            thematic_page_serializer.save()
             # Notify that the creation was successful
             return JsonResponse(thematic_page_serializer.data, status=status.HTTP_201_CREATED)
         # Notify that the creation was not successful :(
@@ -203,7 +203,7 @@ def thematic_page_detail(request, pk):
         thematic_page_serializer = ThematicPageSerializer(page, data=thematic_page_data)
         if thematic_page_serializer.is_valid():
             # Update data of thematic page
-            thematic_page_serializer.save(user=request.user)
+            thematic_page_serializer.save()
             # Return new data
             return JsonResponse(thematic_page_serializer.data)
         # Something was wrong :(
