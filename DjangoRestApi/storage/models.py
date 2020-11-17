@@ -4,6 +4,13 @@ from django.urls import reverse
 from accounts.models import User
 
 
+class ThematicPage(models.Model):
+    name = models.CharField(max_length=200, help_text="Enter the name for thematic page")
+
+    def __str__(self):
+        return self.name
+
+
 class Tag(models.Model):
     # Implement attributes of Tag entity according to ER schema.
     name = models.CharField(max_length=200)
@@ -35,6 +42,7 @@ class Upload(models.Model):
     innopoints = models.IntegerField(default=0)
     tags = models.ManyToManyField(Tag)
     link = models.CharField(max_length=150, default=None, null=True, blank=True)
+    thematic_page = models.ForeignKey(ThematicPage, on_delete=models.CASCADE)
 
     # thematic_page = models.CharField(max_length=50)
     # file = models.FileField(upload_to='media/')
