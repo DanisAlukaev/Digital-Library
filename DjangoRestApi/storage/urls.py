@@ -4,12 +4,12 @@ from storage import views
 """
 Defined routes.
 
-CONTENT.
+CONTENT:
 /api/uploads: GET, POST, DELETE
 /api/uploads/:id: GET, PUT, DELETE
-/api/uploads/published: GET
+/api/uploads/status: GET
 
-TAGS.
+TAGS:
 /api/tags/: GET
 """
 
