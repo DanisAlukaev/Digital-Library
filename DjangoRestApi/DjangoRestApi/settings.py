@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'accounts',
     'storage',
     'djoser',
+    'ThematicPages',
 ]
 
 MIDDLEWARE = [
