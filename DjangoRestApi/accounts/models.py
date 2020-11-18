@@ -20,7 +20,7 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, password, image=None, mid_name=None):
+    def create_superuser(self, email, first_name, last_name, password, image=None, mid_name=None, role=None):
         # Provide guidance for django backend on how superuser created.
         if image is not None:
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password,

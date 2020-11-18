@@ -8,6 +8,9 @@ class Tag(models.Model):
     # Implement attributes of Tag entity according to ER schema.
     name = models.CharField(max_length=200)
 
+    def natural_key(self):
+        return self.name
+
     def __str__(self):
         return self.name
 
@@ -35,9 +38,8 @@ class Upload(models.Model):
     innopoints = models.IntegerField(default=0)
     tags = models.ManyToManyField(Tag)
     link = models.CharField(max_length=150, default=None, null=True, blank=True)
-
     # thematic_page = models.CharField(max_length=50)
-    # file = models.FileField(upload_to='media/')
+    file = models.FileField(upload_to='files/', default='files/None/No-doc.pdf', null=True, blank=True)
 
     def __str__(self):
         return self.title

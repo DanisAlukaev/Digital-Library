@@ -57,6 +57,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DjangoRestApi.wsgi.application'
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -117,3 +119,4 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
+
