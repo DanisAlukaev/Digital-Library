@@ -106,16 +106,16 @@ def upload_detail(request, pk):
         return JsonResponse({'message': 'Upload was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
 
 
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def upload_status(request):
-    # Retrieve all published uploads from database
+    # Retrieve all published uploads from database.
     uploads = Upload.objects.filter(status=1)
 
-    # GET request
+    # GET request.
     if request.method == 'GET':
-        # Serialize published uploads
+        # Serialize published uploads.
         uploads_serializer = UploadSerializer(uploads, many=True)
-        # Return serialized instances
+        # Return serialized instances.
         return JsonResponse(uploads_serializer.data, safe=False)
 
 

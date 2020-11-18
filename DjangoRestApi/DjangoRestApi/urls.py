@@ -7,6 +7,7 @@ urlpatterns = [
     path('auth/', include('accounts.urls')),
     # Include URL patterns from storage app
     url('api/storage/', include('storage.urls')),
-    # Include URL patterns from ThematicPages app
-    url('api/ThematicPages/', include('ThematicPages.urls')),
+    # Include URL patterns from thematic_pages app
+    url('api/thematic_pages/', include('thematic_pages.urls')),
+    url('api/moderate/', include('moderate.urls')),
 ]

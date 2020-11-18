@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from accounts.models import User
-from ThematicPages.models import ThematicPage
+from thematic_pages.models import ThematicPage
 
 
 class Tag(models.Model):

@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class ThematicpagesConfig(AppConfig):
-    name = 'ThematicPages'
+    name = 'thematic_pages'

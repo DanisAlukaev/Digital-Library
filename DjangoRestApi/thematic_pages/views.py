@@ -4,20 +4,20 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 
-from ThematicPages.models import ThematicPage
-from ThematicPages.serializers import ThematicPageSerializer
+from thematic_pages.models import ThematicPage
+from thematic_pages.serializers import ThematicPageSerializer
 from rest_framework.decorators import api_view
 
 """
 Available requests:
 Methods	    Urls                          Actions
 
-GET         api/ThematicPages             get all ThematicPages
-GET         api/ThematicPages/:id         get Thematic Pages by id
-POST        api/ThematicPages             add new ThematicPage
-PUT         api/ThematicPages/:id         update Thematic Page by id
-DELETE      api/ThematicPages             remove all ThematicPages
-DELETE      api/ThematicPages/:id         remove all Uploads of Thematic Page and the Page itself by id
+GET         api/thematic_pages             get all thematic_pages
+GET         api/thematic_pages/:id         get Thematic Pages by id
+POST        api/thematic_pages             add new ThematicPage
+PUT         api/thematic_pages/:id         update Thematic Page by id
+DELETE      api/thematic_pages             remove all thematic_pages
+DELETE      api/thematic_pages/:id         remove all Uploads of Thematic Page and the Page itself by id
 """
 
 
@@ -94,8 +94,6 @@ def thematic_page_detail(request, pk):
 
     # DELETE request
     elif request.method == 'DELETE':
-        # Delete uploads of specified Thematic Page
-        page.upload_set.delete()
         # Delete Thematic Page
         page.delete()
         # Notify that the removal was successful

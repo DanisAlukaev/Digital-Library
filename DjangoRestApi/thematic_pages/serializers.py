@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ThematicPages.models import ThematicPage
+from thematic_pages.models import ThematicPage
 
 
 class ThematicPageSerializer(serializers.ModelSerializer):
@@ -14,4 +14,4 @@ class ThematicPageSerializer(serializers.ModelSerializer):
         model = ThematicPage
         # A tuple of field names to be included in the serialization.
         fields = ('id',
-                  'name',)
+                  'title',)
