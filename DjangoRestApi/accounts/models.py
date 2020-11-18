@@ -3,9 +3,15 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, password):
+
+    def create_user(self, email, first_name, last_name, password, image=None, mid_name=None):
         # Provide guidance for django backend on how regular users created.
-        user = self.model(email=email, first_name=first_name, last_name=last_name, password=password)
+        if image is not None:
+            user = self.model(email=email, first_name=first_name, last_name=last_name, password=password,
+                              image=image, mid_name=mid_name)
+        else:
+            user = self.model(email=email, first_name=first_name, last_name=last_name, password=password,
+                              mid_name=mid_name)
         user.set_password(password)
         user.role = '2'
         user.is_staff = False
@@ -14,9 +20,14 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, first_name, last_name, password):
+    def create_superuser(self, email, first_name, last_name, password, image=None, mid_name=None):
         # Provide guidance for django backend on how superuser created.
-        user = self.model(email=email, first_name=first_name, last_name=last_name, password=password)
+        if image is not None:
+            user = self.model(email=email, first_name=first_name, last_name=last_name, password=password,
+                              image=image, mid_name=mid_name)
+        else:
+            user = self.model(email=email, first_name=first_name, last_name=last_name, password=password,
+                              mid_name=mid_name)
         user.set_password(password)
         user.is_active = True
         user.role = '0'
@@ -36,16 +47,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    mid_name = models.CharField(max_length=30)
+    mid_name = models.CharField(max_length=30, null=True, blank=True)
     role = models.CharField(max_length=1,
-                            choices=[('0', 'administrator'), ('1', 'moderators'), ('2', 'regular')],
+                            choices=[('0', 'administrator'), ('1', 'moderator'), ('2', 'regular')],
                             default='2'
                             )
+    image = models.ImageField(upload_to="profile_pictures", default="profile_pictures/default.png")
     # Create flags to keep track of application permissions.
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     # Specify required for registration attributes.
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'mid_name', 'image', 'role']
     USERNAME_FIELD = 'email'
     # Call user manager.
     objects = UserManager()
