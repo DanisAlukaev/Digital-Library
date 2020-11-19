@@ -54,9 +54,6 @@ def upload_list(request):
 
     # POST request
     elif request.method == 'POST':
-        # Parse request object.
-        # upload_data = JSONParser().parse(request)
-
         # Deserialize from JSON.
         upload_serializer = UploadSerializer(data=request.data)
         if upload_serializer.is_valid():
@@ -93,10 +90,8 @@ def upload_detail(request, pk):
 
     # PUT request.
     elif request.method == 'PUT':
-        # Parse request object.
-        upload_data = JSONParser().parse(request)
         # Deserialize from JSON.
-        upload_serializer = UploadSerializer(upload, data=upload_data)
+        upload_serializer = UploadSerializer(upload, data=request.data)
         if upload_serializer.is_valid():
             # Update data of upload.
             upload_serializer.save(user=request.user)

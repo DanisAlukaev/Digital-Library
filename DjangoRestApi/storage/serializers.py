@@ -16,13 +16,16 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ('id',
                   'name')
 
+    def to_internal_value(self, data):
+        return Tag.objects.get(id=data)
 
-class TagIdSerializer(serializers.ModelSerializer):
-    class Meta:
-        # The model class for Serializer.
-        model = Tag
-        # A tuple of field names to be included in the serialization.
-        fields = ('id')
+
+# class TagIdSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         # The model class for Serializer.
+#         model = Tag
+#         # A tuple of field names to be included in the serialization.
+#         fields = ('id',)
 
 
 class UploadSerializer(serializers.ModelSerializer):
@@ -33,7 +36,7 @@ class UploadSerializer(serializers.ModelSerializer):
     """
 
     file = serializers.FileField(max_length=None, use_url=True, required=False)
-    tags = TagIdSerializer(many=True, read_only=True)
+    tags = TagSerializer(many=True)
 
     class Meta:
         # The model class for Serializer.
@@ -50,3 +53,25 @@ class UploadSerializer(serializers.ModelSerializer):
                   'link',
                   'file')
         extra_kwargs = {'user': {'required': False}}
+
+    def create(self, validated_data):
+        tags_data = validated_data.pop('tags')
+        upload = Upload.objects.create(**validated_data)
+        for tag_data in tags_data:
+            upload.tags.add(tag_data)
+        return upload
+
+    def update(self, instance, validated_data):
+        tags_data = validated_data.pop('tags')
+
+        instance.title = validated_data.get('title', instance.title)
+        instance.type = validated_data.get('type', instance.type)
+        instance.innopoints = validated_data.get('innopoints', instance.innopoints)
+        # instance.link = validated_data.get('link', instance.link)
+        # instance.file = validated_data.get('file', instance.link)
+        instance.status = validated_data.get('status', instance.status)
+        instance.tags.clear()
+        for tag_data in tags_data:
+            instance.tags.add(tag_data)
+        instance.save()
+        return instance
