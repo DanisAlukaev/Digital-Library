@@ -23,7 +23,11 @@ GET         /api/moderate/thematic_pages_list   get ThematicPages to moderate
 GET         /api/moderate/thematic_page/:id/    Get users without access to Thematic Page
             user_with_no_access_list            
 GET         /api/moderate/thematic_page/:id/    Get Users with access to Thematic Page
-            user_with_access_list               
+            user_with_access_list   
+GET         /api/moderate/thematic_page/:pk/    Get Users requesting access to Thematic Page
+            requests
+PUT         /api/moderate/add_user/             Add User that can access Thematic Page
+            :page_pk/:user_pk            
 """
 
 
@@ -154,6 +158,28 @@ def user_with_no_access_list(request, pk):
                 users = users.exclude(pk=pk_)
             # serialize Users
             user_serializer = UserCreateSerializer(users, many=True)
+            # return serialized Users
+            return JsonResponse(user_serializer.data, safe=False)
+        else:
+            return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+def users_requesting_access(request, pk):
+    # user should be logged in
+    if request.user.is_anonymous:
+        return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+
+    # Get page specified by a primary key
+    try:
+        page = ThematicPage.objects.get(pk=pk)
+    except ThematicPage.DoesNotExist:
+        return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        if User.objects.get(pk=request.user.pk).role != '2':
+            # serialize Users
+            user_serializer = UserCreateSerializer(page.requested_by, many=True)
             # return serialized Users
             return JsonResponse(user_serializer.data, safe=False)
         else:
