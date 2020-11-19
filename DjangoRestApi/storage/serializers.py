@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from storage.models import Upload, Tag
+from storage.models import Upload, Tag, BookmarkPage
 
 
 class UploadSerializer(serializers.ModelSerializer):
@@ -39,3 +39,17 @@ class TagSerializer(serializers.ModelSerializer):
         # A tuple of field names to be included in the serialization.
         fields = ('id',
                   'name')
+
+
+class BookmarkPageSerializer(serializers.ModelSerializer):
+    """
+    Class that manages serialization and deserialization from of BookmarkPage JSON.
+    It inherits from rest_framework.serializers.ModelSerializer superclass
+    which automatically populates a set of fields and default validators.
+    """
+
+    class Meta:
+        # The model class for Serializer.
+        model = BookmarkPage
+        # A tuple of field names to be included in the serialization.
+        fields = ('id', 'title')

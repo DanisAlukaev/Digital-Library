@@ -15,7 +15,7 @@ from rest_framework.decorators import api_view
 """
 Available requests:
 Methods	    Urls                                Actions
-GET         /api/moderate/thematic_page/:id     get Upload items to moderate for Thematic Page with defined id     
+GET         /api/moderate/thematic_page/:id     get Upload items to moderate for Thematic Page with defined id
 PUT         /api/moderate/upload/:id/approve    approve upload with given id
 PUT         /api/moderate/upload/:id/reject     reject upload with given id
 GET         /api/moderate/thematic_pages_list   get ThematicPages to moderate
@@ -202,7 +202,7 @@ def add_user(request, page_pk, user_pk):
     try:
         user = User.objects.get(pk=user_pk)
     except User.DoesNotExist:
-        return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
     # PUT request
     if request.method == 'PUT':
         if page in request.user.can_moderate:
