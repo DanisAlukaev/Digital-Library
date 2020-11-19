@@ -10,4 +10,5 @@ urlpatterns = [
     # Include URL patterns from thematic_pages app
     url('api/thematic_pages/', include('thematic_pages.urls')),
     url('api/moderate/', include('moderate.urls')),
+    url('api/user_view/', include('user_view.urls')),
 ]
