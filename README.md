@@ -42,8 +42,13 @@ MIDDLEWARE = [
 ```
 CORS_ORIGIN_ALLOW_ALL = True
 ```
+------
+- Install necessary packages:
+```
+pip install requirements.txt
+```
 ### Frontend
-- Install NodeJS:
+- Install NodeJS.
 
 -------------
 - Install all required libraries:

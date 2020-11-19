@@ -20,14 +20,6 @@ class TagSerializer(serializers.ModelSerializer):
         return Tag.objects.get(id=data)
 
 
-# class TagIdSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         # The model class for Serializer.
-#         model = Tag
-#         # A tuple of field names to be included in the serialization.
-#         fields = ('id',)
-
-
 class UploadSerializer(serializers.ModelSerializer):
     """
     Class that manages serialization and deserialization of Upload model from JSON.
