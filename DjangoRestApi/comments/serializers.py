@@ -16,4 +16,3 @@ class CommentSerializer(serializers.ModelSerializer):
                   'author']
 
         extra_kwargs = {'author': {'required': False}}
-
