@@ -39,6 +39,7 @@ class Upload(models.Model):
     tags = models.ManyToManyField(Tag, null=True, blank=True)
     link = models.CharField(max_length=150, default=None, null=True, blank=True)
     thematic_page = models.ForeignKey(ThematicPage, default=None, null=True, blank=True, on_delete=models.CASCADE)
+    rating = models.FloatField(default=0, null=True, blank=True)
     file = models.FileField(upload_to='files/', default='files/None/No-doc.pdf', null=True, blank=True)
 
     def __str__(self):

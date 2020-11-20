@@ -1,10 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, first_name, last_name, password, degree, course, track, role=None, image=None, mid_name=None):
+    def create_user(self, email, first_name, last_name, password, degree, course, track, role=None, image=None,
+                    mid_name=None):
         # Provide guidance for django backend on how regular users created.
         if image is not None:
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password, degree=degree,

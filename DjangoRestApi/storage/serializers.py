@@ -44,7 +44,8 @@ class UploadSerializer(serializers.ModelSerializer):
                   'tags',
                   'link',
                   'file',
-                  'thematic_page')
+                  'thematic_page',
+                  'rating')
         extra_kwargs = {'user': {'required': False}}
 
     def create(self, validated_data):
