@@ -1,4 +1,5 @@
 from pathlib import Path
+from django.contrib.auth import password_validation
 import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -10,8 +11,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'rest_framework.authtoken',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -21,6 +20,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'storage',
+    'thematic_pages',
+    'moderators_view',
+    'users_view',
+    'rest_framework',
+    'rest_framework.authtoken',
     'djoser',
     'django_cleanup',
 ]
@@ -69,8 +73,8 @@ DATABASES = {
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_PERMISSIONS_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -85,8 +89,9 @@ DJOSER = {
     'USER_CREATE_PASSWORD_RETYPE': True,
     'SERIALIZERS': {
         'user_create': 'accounts.serializers.UserCreateSerializer',
-        'user': 'accounts.serializers.UserCreateSerializer'
-    }
+        'user': 'accounts.serializers.UserCreateSerializer',
+        'PASSWORD_VALIDATORS': [password_validation.validate_password]
+}
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -119,4 +124,3 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'
-

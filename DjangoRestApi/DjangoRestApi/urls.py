@@ -10,4 +10,8 @@ urlpatterns = [
     path('auth/', include('accounts.urls')),
     # Include URL patterns from storage app
     url('api/storage/', include('storage.urls')),
+    # Include URL patterns from thematic_pages app
+    url('api/thematic_pages/', include('thematic_pages.urls')),
+    url('api/moderate/', include('moderators_view.urls')),
+    url('api/user_view/', include('users_view.urls')),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

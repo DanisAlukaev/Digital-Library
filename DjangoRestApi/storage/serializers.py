@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from storage.models import Upload, Tag
+from storage.models import Upload, Tag, BookmarkPage
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -43,7 +43,8 @@ class UploadSerializer(serializers.ModelSerializer):
                   'innopoints',
                   'tags',
                   'link',
-                  'file')
+                  'file',
+                  'thematic_page')
         extra_kwargs = {'user': {'required': False}}
 
     def create(self, validated_data):
@@ -59,11 +60,23 @@ class UploadSerializer(serializers.ModelSerializer):
         instance.title = validated_data.get('title', instance.title)
         instance.type = validated_data.get('type', instance.type)
         instance.innopoints = validated_data.get('innopoints', instance.innopoints)
-        # instance.link = validated_data.get('link', instance.link)
-        # instance.file = validated_data.get('file', instance.link)
         instance.status = validated_data.get('status', instance.status)
         instance.tags.clear()
         for tag_data in tags_data:
             instance.tags.add(tag_data)
         instance.save()
         return instance
+
+
+class BookmarkPageSerializer(serializers.ModelSerializer):
+    """
+    Class that manages serialization and deserialization from of BookmarkPage JSON.
+    It inherits from rest_framework.serializers.ModelSerializer superclass
+    which automatically populates a set of fields and default validators.
+    """
+
+    class Meta:
+        # The model class for Serializer.
+        model = BookmarkPage
+        # A tuple of field names to be included in the serialization.
+        fields = ('id', 'title')

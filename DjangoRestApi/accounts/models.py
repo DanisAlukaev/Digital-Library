@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 class UserManager(BaseUserManager):
 
-    def create_user(self, email, first_name, last_name, password, degree, course, track, image=None, mid_name=None):
+    def create_user(self, email, first_name, last_name, password, degree, course, track, role=None, image=None, mid_name=None):
         # Provide guidance for django backend on how regular users created.
         if image is not None:
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password, degree=degree,
@@ -48,12 +48,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Degree(models.IntegerChoices):
         BACHELOR = 0
         MASTER = 1
+        NOT_STUDENT = 2
 
     class Course(models.IntegerChoices):
         FIRST = 1
         SECOND = 2
         THIRD = 3
         FOURTH = 4
+        NOT_STUDENT = 5
 
     class Track(models.IntegerChoices):
         COMPUTER_SCIENCE = 0
