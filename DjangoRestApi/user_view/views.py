@@ -19,6 +19,8 @@ GET         /api/user_view/thematic_page_uploads/:pk     get Upload items to vie
 PUT         /api/user_view/request_read_rights/:pk       request an access to Thematic Page 
 PUT         /api/user_view/bookmark/                     Add Upload to Bookmark Page
             :bookmark_pk/:upload_pk
+POST        /api/user_view/bookmark/add/                 Add new Bookmark Page
+            :page_title
 GET         /api/user_view/bookmark_list                 Get Bookmark Pages for user
 """
 
