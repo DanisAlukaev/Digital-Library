@@ -1,12 +1,9 @@
 from __future__ import unicode_literals
 from django.urls import reverse
 from django.utils import timezone
-from django.contrib.auth.models import User
-from Storage.models import Upload
-from django.conf import settings
+from accounts.models import User
+from storage.models import Upload
 from django.db import models
-
-
 
 
 class Comment(models.Model):

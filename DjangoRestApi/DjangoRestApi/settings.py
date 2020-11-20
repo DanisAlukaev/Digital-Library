@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'storage',
+    'comments',
     'thematic_pages',
     'moderators_view',
     'users_view',
