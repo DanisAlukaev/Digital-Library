@@ -9,7 +9,6 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('Storage', '0010_delete_comment'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('comments', '0001_initial'),
     ]
