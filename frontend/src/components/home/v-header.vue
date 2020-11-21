@@ -47,7 +47,7 @@
                         </div>
                         <div class="navbar-nav profile">
                             <div class="name-profile nav-link header-font-size">
-                                {{name}}
+                                {{userName}}
                                 <div class="dropdown-profile">
                                     <div class="list-item" v-if="isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'profile'}">My account</router-link></p>
@@ -58,52 +58,57 @@
                                     <div class="list-item-last" v-if="!isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'registration'}">Sign up</router-link></p>
                                     </div>
+
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'contribute'}">Contribute</router-link></p>
+                                    </div>
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'uploads'}">Uploads</router-link></p>
+                                    </div>
+
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'users'}">Users</router-link></p>
+                                    </div>
+
                                     <div class="list-item-last" v-if="isAuthenticated">
-                                        <p class="list-item-text">Log out</p>
+                                        <p class="list-item-text" @click="logout()">Log out</p>
                                     </div>
                                 </div>
                             </div>
-                            <img src="../../assets/profile.png" alt="" class="avatar">
+                            <img alt="" class="avatar">
                         </div>
                     </div>
                 </div>
             </nav>
         </header>
-        <!--
-        <div class="home">
-            <router-link :to="{name: 'home'}">
-                <p class="nav-bar-item">Home</p>
-            </router-link>
-        </div>
-        <div class="log-in">
-            <b-button pill variant="info" v-b-modal="'log_in_form'" class="log-in-button">Log-in</b-button>
-
-        </div>
-        <b-modal size="lg" id='log_in_form' centered title="Enter your login and password" ok-only button-size="lg" ok-variant="info">
-			<template v-slot:modal-footer="{ ok }">
-				<b-button size="sm" variant="info" @click="ok()" class="log-in-form-button" pill>Log in</b-button>
-			</template>
-            <b-form-input :id="'login'" :name="'log-in-input'" :type="'text'" :placeholder="'Login'" size="sm" required class="input-search"></b-form-input>
-			<b-form-input :id="'password'" :name="'log-in-input'" :type="'password'" :placeholder="'Password'" size="sm" required class="input-search"></b-form-input>
-			<b-form-checkbox :id="'remember'" :name="'log-in-input'" v-model="selected">Remember me</b-form-checkbox>
-        </b-modal>
-        -->
     </div>
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import {mapGetters, mapState} from "vuex";
     export default {
         name: 'v-header',
-        data: function(){
-            return {
-                name: 'Miley Cyrus'
+        computed: {
+            ...mapState({info:'informationAboutMe'}),
+            ...mapGetters(["isAuthenticated"]),
+            userName: function(){
+                if(this.info === undefined)return "";
+                return this.info.first_name + " " + this.info.last_name || "";
             }
         },
-        computed: {
-            ...mapGetters(["isAuthenticated"])
+        watch:{
+            info:function(val){
+                document.querySelector('.avatar').src = val.image;
+            }
         },
-		methods: {}
+        created() {
+            this.$store.dispatch('getInfo');
+        },
+        methods: {
+            logout(){
+                this.$store.dispatch('logout');
+            }
+        }
     }
 </script>
 

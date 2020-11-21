@@ -106,7 +106,7 @@
     width: 100%;
 }
 .list-item {
-    height: 4vh;
+    height: 8vh;
     margin: 0 5% 0 5%;
     cursor: pointer;
     border-bottom: 1px solid #9b9b9b;
@@ -289,7 +289,7 @@
     mask: url("../node_modules/bootstrap-icons/icons/list.svg") no-repeat 100%;
     -webkit-mask-position-x: 50%;
     -webkit-mask-position-y: 50%;
-    cursor:none
+    cursor:default;
 }
 .comments-icon {
     width: 3vh;

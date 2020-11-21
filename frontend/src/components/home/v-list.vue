@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="list-wrapper">
-            <div class="list-item" @click="openItem(doc)" v-for="doc in documents" :key="doc.name">
+            <div class="list-item" @click="openItem(doc)" v-for="doc in documents" :key="doc.title">
                 <div class="list-item-icon" :class="{
                     'list-item-icon-document': doc.type ==='document',
                     'list-item-icon-video': doc.type ==='video',
                     'list-item-icon-link': doc.type ==='link',
                     'list-item-icon-folder': doc.type ==='folder',
                     'list-item-icon-image': doc.type ==='image'}"></div>
-                <p class="list-item-text">{{doc.name}}</p>
+                <p class="list-item-text">{{doc.title}}</p>
             </div>
     </div>
         <div class="navigation-bottom">
@@ -26,18 +26,18 @@
         methods: {
             openItem(doc){
                 this.open(doc);
-                if(this.openedDocuments.length === 1)this.active(this.openedDocuments[0].name);
+                if(this.openedDocuments.length === 1)this.active(this.openedDocuments[0].title);
             },
-            ...mapActions({open:"openDocument", active: "activateTab"})
+            ...mapActions({open:"openDocument", active: "activateTab", getList:"getList"})
+        },
+        created() {
+            this.getList();
         },
         computed: {
             ...mapState([
                 'documents',
                 'openedDocuments'
             ])
-        },
-        data:function () {
-            return {}
         }
     }
 </script>
@@ -46,6 +46,7 @@
     .navigation-bottom-link {
         padding: 0.5vh;
         text-decoration: none;
+        color: #5b5b5b;
     }
     .list-item-icon {
         position: absolute;

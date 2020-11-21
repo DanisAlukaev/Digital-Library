@@ -50,18 +50,24 @@
                 pageRendering: false,
                 pageNumPending: null,
                 pageMax: 1,
-                pageNum: 1,
+                pageNum: 1
             }
         },
         computed:{
-            ...mapState({doc:'currentDoc'}),
-            //url:this.$store.state.currentDoc.url,
+            ...mapState({doc:'currentDoc', comm: 'currentComments'}),
+
             url:function(){
-                return this.doc.url || "";
+                return ('http://127.0.0.1:8000' + this.doc.file)  || "";
             },
-            comments:function(){return this.doc.comments || [];},
+            comments:function(){return this.comm || [];},
             rating:function(){return this.doc.rating || undefined;},
-            //pageNum:function(){return this.doc.pageNum || 1;}
+        },
+        watch: {
+            url:function(new_val){
+                this.$store.dispatch('getComments');
+                this.pageNum = this.doc.pageNum || 1;
+                this.fetchPDF(new_val);
+            },
         },
         methods: {
             dropdownComments(){
@@ -75,14 +81,10 @@
             changePage(pageNum){
                 this.renderPage(this.pageNum);
             },
-            fetchPDF() {
-                console.log(this.url);
+            fetchPDF(new_url) {
                 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;//change location
-                pdfjsLib.getDocument(this.url).promise.then((pdf) => {
-                    //console.log(this.url + "\n");
-                    //console.log(this.oldurl + "\n");
+                pdfjsLib.getDocument(new_url).promise.then((pdf) => {
                     if(this.pdf)this.pdf.destroy();
-                    //this.oldurl = this.url;
                     this.pdf = pdf;
                     this.pageMax = this.pdf.numPages;
                     this.renderPage(this.pageNum);
@@ -116,19 +118,17 @@
             },
             onPrevPage() {
                 if (this.pageNum <= 1) return;
+                this.$store.state.currentDoc.pageNum--;
                 this.pageNum--;
                 this.queueRenderPage(this.pageNum);
             },
             onNextPage(){
                 if (this.pageNum >= this.pageMax)return;
-                //this.$store.state.currentDoc.pageNum++;
+                this.$store.state.currentDoc.pageNum++;
                 this.pageNum++;
                 this.queueRenderPage(this.pageNum);
             }
         },
-        updated() {
-            this.fetchPDF();
-        }
     }
 </script>
 
