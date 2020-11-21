@@ -13,8 +13,7 @@ class TagSerializer(serializers.ModelSerializer):
         # The model class for Serializer.
         model = Tag
         # A tuple of field names to be included in the serialization.
-        fields = ('id',
-                  'name')
+        fields = ('id', 'name')
 
     def to_internal_value(self, data):
         return Tag.objects.get(id=data)
@@ -27,7 +26,9 @@ class UploadSerializer(serializers.ModelSerializer):
     which automatically populates a set of fields and default validators.
     """
 
+    # File serialization.
     file = serializers.FileField(max_length=None, use_url=True, required=False)
+    # Multiple Tag serialization.
     tags = TagSerializer(many=True)
 
     class Meta:
@@ -49,22 +50,33 @@ class UploadSerializer(serializers.ModelSerializer):
         extra_kwargs = {'user': {'required': False}}
 
     def create(self, validated_data):
+        # Describes the process of fields deserialization for object creation.
+
+        # Retrieve tags parameters.
         tags_data = validated_data.pop('tags')
+        # Create a new instance of an upload.
         upload = Upload.objects.create(**validated_data)
+        # Put tags in new upload.
         for tag_data in tags_data:
             upload.tags.add(tag_data)
         return upload
 
     def update(self, instance, validated_data):
-        tags_data = validated_data.pop('tags')
+        # Describes the process of fields deserialization for object update.
 
+        # Retrieve tags parameters.
+        tags_data = validated_data.pop('tags')
+        # Update title, type, innopoints, status field.
         instance.title = validated_data.get('title', instance.title)
         instance.type = validated_data.get('type', instance.type)
         instance.innopoints = validated_data.get('innopoints', instance.innopoints)
         instance.status = validated_data.get('status', instance.status)
+        # Clear tags field.
         instance.tags.clear()
+        # Set new tags.
         for tag_data in tags_data:
             instance.tags.add(tag_data)
+        # Save upload.
         instance.save()
         return instance
 

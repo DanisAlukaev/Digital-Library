@@ -1,42 +1,65 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from rest_framework.authtoken.models import Token
 
 
 class UserManager(BaseUserManager):
+    """
+    Class used to keep track of users. Implements methods for user and superuser creating.
+    """
 
     def create_user(self, email, first_name, last_name, password, degree, course, track, role=None, image=None,
                     mid_name=None):
-        # Provide guidance for django backend on how regular users created.
+        # Provide guidance for django backend on how regular users are created.
+        # Check whether image is provided.
         if image is not None:
+            # Create a user with a specified profile image.
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password, degree=degree,
                               course=course, track=track, image=image, mid_name=mid_name)
         else:
+            # Create a user with a default profile image.
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password, degree=degree,
                               course=course, track=track, mid_name=mid_name)
+        # Set a password.
         user.set_password(password)
+        # Role is regular.
         user.role = '2'
+
+        # Django-required fields.
+        # User is not a staff.
         user.is_staff = False
+        # User is active.
         user.is_active = True
+        # User is not a superuser.
         user.is_superuser = False
+        # Save new user in database.
         user.save(using=self._db)
         return user
 
     def create_superuser(self, email, first_name, last_name, password, degree, course, track, image=None, mid_name=None,
                          role=None):
         # Provide guidance for django backend on how superuser created.
+        # Check whether image is provided.
         if image is not None:
+            # Create a user with a specified profile image.
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password, degree=degree,
                               course=course, track=track, image=image, mid_name=mid_name)
         else:
+            # Create a user with a default profile image.
             user = self.model(email=email, first_name=first_name, last_name=last_name, password=password, degree=degree,
                               course=course, track=track, mid_name=mid_name)
+        # Set a password.
         user.set_password(password)
-        user.is_active = True
+        # Role is Administrator.
         user.role = '0'
+
+        # Django-required fields.
+        # User is a staff.
         user.is_staff = True
+        # User is active.
         user.is_active = True
+        # User is not a superuser.
         user.is_superuser = True
+        # Save new user in database.
         user.save(using=self._db)
         return user
 
@@ -46,7 +69,12 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    # Create auxiliary classes to explicitly specify options for position in UI.
+    """
+    Class used for authorization. Describes attributes of a user, e.g. email, first_name, last_name, mid_name, degree,
+    course, track, role, image.
+    """
+
+    # Create auxiliary classes to explicitly specify options for a position in IU.
     class Degree(models.IntegerChoices):
         BACHELOR = 0
         MASTER = 1
@@ -67,7 +95,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         SECURITY = 4
         NOT_STUDENT = 5
 
-    # Implement attributes of User entity according to ER schema.
+    # Implement attributes of User a entity according to ER schema.
+    # Primary key email.
     email = models.EmailField(verbose_name='email', max_length=255, unique=True)
     # Name of a user.
     first_name = models.CharField(max_length=30)
@@ -77,7 +106,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     degree = models.IntegerField(choices=Degree.choices, default=0)
     course = models.IntegerField(choices=Course.choices, default=0)
     track = models.IntegerField(choices=Track.choices, default=0)
-    # Role of a user.
+    # Role of a user in the web-service.
     role = models.CharField(max_length=1,
                             choices=[('0', 'administrator'), ('1', 'moderator'), ('2', 'regular')],
                             default='2')
@@ -89,7 +118,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # Specify required for registration attributes.
     REQUIRED_FIELDS = ['first_name', 'last_name', 'mid_name', 'image', 'role', 'degree', 'course', 'track']
     USERNAME_FIELD = 'email'
-    # Call user manager.
+    # Call a user manager.
     objects = UserManager()
 
     def natural_key(self):

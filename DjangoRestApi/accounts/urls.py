@@ -9,11 +9,13 @@ POST        auth/users/         Creates new user.
 POST        auth/token/login/   Creates new token "token" for a user specified by email and password.
 POST        auth/token/logout/  Log-out a user with token "token".
 GET         auth/users/me/      Returns information about a user with token "token".
+GET         auth/create_token/  Creates token session for a user with passed in parameters id.
 """
 
 urlpatterns = [
+    # Djoser initialization.
     path('', include('djoser.urls')),
     path('', include('djoser.urls.authtoken')),
-    path('restricted/', views.restricted),
+    # Create new token session. Used only after registration.
     path('create_token/', views.create_token)
 ]
