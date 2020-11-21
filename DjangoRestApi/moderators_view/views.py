@@ -15,13 +15,13 @@ from rest_framework.decorators import api_view
 """
 Available requests:
 Methods	    Urls                                Actions
-GET         /api/moderate/thematic_page/:id     get Upload items to moderate for Thematic Page with defined id
-PUT         /api/moderate/upload/:id/approve    approve upload with given id
-PUT         /api/moderate/upload/:id/reject     reject upload with given id
+GET         /api/moderate/thematic_page/:pk     get Upload items to moderate for Thematic Page with defined id
+PUT         /api/moderate/upload/:pk/approve    approve upload with given id
+PUT         /api/moderate/upload/:pk/reject     reject upload with given id
 GET         /api/moderate/thematic_pages_list   get ThematicPages to moderate
-GET         /api/moderate/thematic_page/:id/    Get users without access to Thematic Page
+GET         /api/moderate/thematic_page/:pk/    Get users without access to Thematic Page
             user_with_no_access_list            
-GET         /api/moderate/thematic_page/:id/    Get Users with access to Thematic Page
+GET         /api/moderate/thematic_page/:pk/    Get Users with access to Thematic Page
             user_with_access_list   
 GET         /api/moderate/thematic_page/:pk/    Get Users requesting access to Thematic Page
             requests
@@ -62,7 +62,7 @@ def moderate_page(request, pk):
 
     # GET request
     if request.method == 'GET':
-        if page in request.user.can_moderate:
+        if page in request.user.can_moderate.all():
             # Serialize specified upload
             upload_serializer = UploadSerializer(upload, many=True)
             # Return serialized upload
@@ -84,7 +84,7 @@ def approve_upload(request, pk):
         return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
     # PUT request
     if request.method == 'PUT':
-        if upload.thematic_page in request.user.can_moderate:
+        if upload.thematic_page in request.user.can_moderate.all():
             upload.status = 1
             # Return data with status = 1
             return JsonResponse({'message': 'The upload is now approved!'})
@@ -105,7 +105,7 @@ def reject_upload(request, pk):
         return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
     # PUT request
     if request.method == 'PUT':
-        if upload.thematic_page in request.user.can_moderate:
+        if upload.thematic_page in request.user.can_moderate.all():
             # delete upload
             upload.delete()
             # Notify that item is now rejected and deleted
@@ -127,7 +127,7 @@ def user_with_access_list(request, pk):
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        if User.objects.get(pk=request.user.pk).role != '2':
+        if page in request.user.can_moderate.all():
             # serialize Users
             user_serializer = UserCreateSerializer(page.users, many=True)
             # return serialized Users
@@ -149,7 +149,7 @@ def user_with_no_access_list(request, pk):
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        if User.objects.get(pk=request.user.pk).role != '2':
+        if page in request.user.can_moderate.all():
             # get users with no access
             users = User.objects.all()
             for pk_ in page.users.values('pk'):
@@ -176,7 +176,7 @@ def users_requesting_access(request, pk):
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
-        if User.objects.get(pk=request.user.pk).role != '2':
+        if page in request.user.can_moderate.all():
             # serialize Users
             user_serializer = UserCreateSerializer(page.requested_by, many=True)
             # return serialized Users
@@ -204,8 +204,11 @@ def add_user(request, page_pk, user_pk):
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
     # PUT request
     if request.method == 'PUT':
-        if page in request.user.can_moderate:
+        if page in request.user.can_moderate.all():
             page.users.add(user)
-            return JsonResponse({'message': 'User can view this page now'})
+            # serialize User
+            user_serializer = UserCreateSerializer(user)
+            # return serialized User
+            return JsonResponse(user_serializer.data)
         else:
             return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)

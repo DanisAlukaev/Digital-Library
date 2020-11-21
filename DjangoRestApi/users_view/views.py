@@ -22,6 +22,7 @@ PUT         /api/user_view/bookmark/                     Add Upload to Bookmark 
 POST        /api/user_view/bookmark/add/                 Add new Bookmark Page
             :page_title
 GET         /api/user_view/bookmark_list                 Get Bookmark Pages for user
+GET         /api/user_view/bookmark_uploads/:pk          Get Uploads of Bookmark Page
 """
 
 
@@ -48,14 +49,14 @@ def thematic_page_uploads(request, pk):
     # Get page
     try:
         page = ThematicPage.objects.get(pk=pk)
-    except Upload.DoesNotExist:
+    except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
     upload = page.upload_set.filter(status=1)
 
     # GET request
     if request.method == 'GET':
-        if page in request.user.can_view:
+        if page in request.user.can_view.all():
             # Serialize specified upload
             upload_serializer = UploadSerializer(upload, many=True)
             # Return serialized upload
@@ -131,7 +132,7 @@ def add_to_bookmark(request, bookmark_pk, upload_pk):
     # Get bookmark page specified by a primary key
     try:
         page = BookmarkPage.objects.get(pk=bookmark_pk)
-    except ThematicPage.DoesNotExist:
+    except BookmarkPage.DoesNotExist:
         return JsonResponse({'message': 'The Bookmark Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
     # Get upload specified by a primary key
     try:
@@ -139,11 +140,31 @@ def add_to_bookmark(request, bookmark_pk, upload_pk):
     except Upload.DoesNotExist:
         return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
     if request.method == "PUT":
-        if page in request.user.bookmarkpage_set:
-            if upload.thematic_page in request.user.can_view:
-                page.uploads.add(upload)
-                # serialize Bookmark Page
-                page_serializer = BookmarkPageSerializer(page)
-                # return serialized Bookmark Page
-                return JsonResponse(page_serializer.data)
+        if upload.status == 1 and page in request.user.bookmarkpage_set.all() and \
+                upload.thematic_page in request.user.can_view.all():
+            page.uploads.add(upload)
+            # serialize Bookmark Page
+            page_serializer = BookmarkPageSerializer(page)
+            # return serialized Bookmark Page
+            return JsonResponse(page_serializer.data)
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET'])
+def bookmark_uploads(request, pk):
+    # user should be logged in
+    if request.user.is_anonymous:
+        return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+    # Get bookmark page specified by a primary key
+    try:
+        page = BookmarkPage.objects.get(pk=pk)
+    except BookmarkPage.DoesNotExist:
+        return JsonResponse({'message': 'The Bookmark Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    if request.method == 'GET':
+        if page in request.user.bookmarkpage_set.all():
+            # Serialize uploads
+            upload_serializer = UploadSerializer(page.uploads, many=True)
+            # Return serialized upload
+            return JsonResponse(upload_serializer.data, safe=False)
+        else:
+            return JsonResponse({'message': "User can't view this page"}, status=status.HTTP_403_FORBIDDEN)

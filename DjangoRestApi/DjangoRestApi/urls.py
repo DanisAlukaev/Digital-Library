@@ -12,7 +12,7 @@ urlpatterns = [
     url('api/storage/', include('storage.urls')),
 
     # Include URL patterns of the thematic_pages app.
-    url('api/thematic_pages/', include('thematic_pages.urls')),
+    # url('api/thematic_pages/', include('thematic_pages.urls')),
     # Include URL patterns of the moderators_view app.
     url('api/moderate/', include('moderators_view.urls')),
     # Include URL patterns of the users_view app.
