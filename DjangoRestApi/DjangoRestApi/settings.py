@@ -8,7 +8,7 @@ SECRET_KEY = '4--p0sz+aic#v-$d4@6#wf8o=rns-v07s9)o8qq@r!49-$9@mu'
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 INSTALLED_APPS = [
     'corsheaders',
