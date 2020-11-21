@@ -1,6 +1,8 @@
 name: deploy frontend
 on:
-  push
+  push:
+    branches:
+      - demonstration
 
 jobs:
   build:
