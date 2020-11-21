@@ -16,8 +16,8 @@ Methods	    Urls                                         Actions
 GET         /api/user_view/thematic_pages_list           get ThematicPages to view
 GET         /api/user_view/not_available_pages_list      get ThematicPages that are not available
 GET         /api/user_view/thematic_page_uploads/:pk     get Upload items to view for Thematic Page with defined id
-PUT         /api/user_view/request_read_rights/:pk       request an access to Thematic Page 
-PUT         /api/user_view/bookmark/                     Add Upload to Bookmark Page
+GET         /api/user_view/request_read_rights/:pk       request an access to Thematic Page 
+POST         /api/user_view/bookmark/                    Add Upload to Bookmark Page
             :bookmark_pk/:upload_pk
 POST        /api/user_view/bookmark/add/                 Add new Bookmark Page
             :page_title
@@ -82,7 +82,7 @@ def not_available_pages_list(request):
         return JsonResponse(pages_serializer.data, safe=False)
 
 
-@api_view(['PUT'])
+@api_view(['GET'])
 def request_read_rights(request, pk):
     # user should be logged in
     if request.user.is_anonymous:
@@ -93,8 +93,8 @@ def request_read_rights(request, pk):
         page = ThematicPage.objects.get(pk=pk)
     except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The page does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    # PUT request
-    if request.method == "PUT":
+    # GET request
+    if request.method == "GET":
         request.user.requested_pages.add(page)
         return JsonResponse({'message': 'Request sent!'})
 
@@ -124,7 +124,7 @@ def add_bookmark(request, page_title):
         return JsonResponse(page_serializer.data)
 
 
-@api_view(['PUT'])
+@api_view(['POST'])
 def add_to_bookmark(request, bookmark_pk, upload_pk):
     # user should be logged in
     if request.user.is_anonymous:
@@ -139,7 +139,7 @@ def add_to_bookmark(request, bookmark_pk, upload_pk):
         upload = Upload.objects.get(pk=upload_pk)
     except Upload.DoesNotExist:
         return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    if request.method == "PUT":
+    if request.method == "POST":
         if upload.status == 1 and page in request.user.bookmarkpage_set.all() and \
                 upload.thematic_page in request.user.can_view.all():
             page.uploads.add(upload)

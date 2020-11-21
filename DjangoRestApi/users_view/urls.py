@@ -12,13 +12,13 @@ Get Thematic Pages not available for user
 Get Uploads
 /api/user_view/thematic_page_uploads/:pk GET
 Request an access to thematic page
-/api/user_view/request_read_rights/:pk PUT
+/api/user_view/request_read_rights/:pk GET
 Get Bookmark Pages for user
 /api/user_view/bookmark_list GET
 Add new Bookmark Page
 /api/user_view/bookmark/add/:page_title POST
 Add Upload to Bookmark Page
-/api/user_view/bookmark/:bookmark_pk/:upload_pk PUT
+/api/user_view/bookmark/:bookmark_pk/:upload_pk POST
 Get Uploads of Bookmark Page
 /api/user_view/bookmark_uploads/:pk GET
 """
