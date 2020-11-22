@@ -53,7 +53,7 @@ class Upload(models.Model):
     # Assigned by a moderator innopoints.
     innopoints = models.IntegerField(default=0)
     # Assigned tags.
-    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, default=None, null=True, blank=True)
     # In case it has a type of link, in link field user can pass a link to an interested resource.
     link = models.CharField(max_length=150, default=None, null=True, blank=True)
     # Thematic page where upload is placed.
@@ -63,13 +63,17 @@ class Upload(models.Model):
     # In case it has not a type of link, in file field user can put an interested file.
     file = models.FileField(upload_to='files/', default='files/None/No-doc.pdf', null=True, blank=True)
 
+    class Meta:
+        ordering = ['-date']
+
     def __str__(self):
         return self.title
 
 
 class BookmarkPage(models.Model):
     """
-    Class used to model bookmark pages. Describes attributes of an upload, e.g. title, user, uploads.
+    Class used to model bookmark pages.
+    Describes attributes of an upload, e.g. title, user, uploads.
     """
 
     # Implement attributes of BookmarkPage entity according to ER schema.
@@ -82,3 +86,35 @@ class BookmarkPage(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    """
+    Class used to model comments.
+    Describes attributes of a comment, e.g. user, upload, content, date.
+    """
+
+    # Implement attributes of Comment entity according to ER schema.
+    # User who left the comment.
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Upload where comment was left.
+    upload = models.ForeignKey(Upload, related_name='comments', on_delete=models.CASCADE)
+    # Text of a comment.
+    content = models.TextField()
+    # Date of a comment.
+    date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-date']
+
+    def number_of_comments(self):
+        return Comment.objects.filter(upload=self).count()
+
+    def __str__(self):
+        return 'Comment ' + str(self.upload.title)
+
+    def get_absolute_url(self):
+        return reverse("comments:thread", kwargs={"id": self.id})
+
+    def get_delete_url(self):
+        return reverse("comments:delete", kwargs={"id": self.id})

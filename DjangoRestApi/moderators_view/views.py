@@ -1,7 +1,4 @@
-from django.shortcuts import render
-
 from django.http.response import JsonResponse
-from rest_framework.parsers import JSONParser
 from rest_framework import status
 
 from storage.models import Upload
@@ -14,202 +11,284 @@ from rest_framework.decorators import api_view
 
 """
 Available requests:
-Methods	    Urls                                Actions
-GET         /api/moderate/thematic_page/:pk     get Upload items to moderate for Thematic Page with defined id
-GET         /api/moderate/upload/:pk/approve    approve upload with given id
-GET         /api/moderate/upload/:pk/reject     reject upload with given id
-GET         /api/moderate/thematic_pages_list   get ThematicPages to moderate
-GET         /api/moderate/thematic_page/:pk/    Get users without access to Thematic Page
-            user_with_no_access_list            
-GET         /api/moderate/thematic_page/:pk/    Get Users with access to Thematic Page
-            user_with_access_list   
-GET         /api/moderate/thematic_page/:pk/    Get Users requesting access to Thematic Page
-            requests
-POST         /api/moderate/add_user/             Add User that can access Thematic Page
-            :page_pk/:user_pk            
+Methods	    Urls                                                        Actions
+
+views.moderate_page
+GET         /api/moderate/thematic_page/:pk                             get uploads to moderate for a thematic page with 
+                                                                        specified id
+
+views.approve_upload
+GET         /api/moderate/upload/:pk/approve                            approve upload with specified id
+
+views.reject_upload
+GET         /api/moderate/upload/:pk/reject                             reject upload with specified id
+
+views.moderate_pages_list
+GET         /api/moderate/thematic_pages_list                           get thematic pages to moderate
+
+views.user_with_no_access_list
+GET         /api/moderate/thematic_page/:pk/user_with_no_access_list    get users without access to thematic page
+                        
+views.user_with_access_list
+GET         /api/moderate/thematic_page/:pk/user_with_access_list       get users with access to thematic page
+               
+views.users_requesting_access
+GET         /api/moderate/thematic_page/:pk/requests                    get users requesting access to thematic page
+
+views.add_user
+POST        /api/moderate/add_user/:page_pk/:user_pk                    add user that can access thematic page                     
 """
 
 
 @api_view(['GET'])
 def moderate_pages_list(request):
-    # user should be logged in
+    # Operates on all thematic pages.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # get pages available for moderating to user
+    # Get all pages available for moderating.
     thematic_pages = request.user.can_moderate
 
+    # GET request.
     if request.method == 'GET':
-        # serialize pages
+        # Serialize thematic pages.
         thematic_page_serializer = ThematicPageSerializer(thematic_pages, many=True)
-        # return serialized page
+        # Return serialized pages.
         return JsonResponse(thematic_page_serializer.data, safe=False)
 
 
 @api_view(['GET'])
 def moderate_page(request, pk):
-    # user should be logged in
+    # Operates on all pending uploads.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get page for moderating
+    # Get page for moderating.
     try:
         page = ThematicPage.objects.get(pk=pk)
     except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
+    # Get all pending uploads.
     upload = page.upload_set.filter(status=2)
 
-    # GET request
+    # GET request.
     if request.method == 'GET':
         if page in request.user.can_moderate.all():
-            # Serialize specified upload
+            # Serialize uploads.
             upload_serializer = UploadSerializer(upload, many=True)
-            # Return serialized upload
+            # Return pending uploads.
             return JsonResponse(upload_serializer.data, safe=False)
         else:
+            # Notify that user cannot moderate on this page.
             return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET'])
 def approve_upload(request, pk):
-    # user should be logged in
+    # Approve request for uploading.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get upload specified by a primary key
+    # Get upload specified by a primary key.
     try:
         upload = Upload.objects.get(pk=pk)
     except Upload.DoesNotExist:
         return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    # PUT request
+
+    # GET request.
     if request.method == 'GET':
         if upload.thematic_page in request.user.can_moderate.all():
+            # Approve upload.
             upload.status = 1
-            # Return data with status = 1
+            # Notify that item is now approved and added.
             return JsonResponse({'message': 'The upload is now approved!'})
         else:
+            # Notify that user cannot moderate on this page.
             return JsonResponse({'message': "User can't moderate this upload"}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET'])
 def reject_upload(request, pk):
-    # user should be logged in
+    # Reject request for uploading.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get upload specified by a primary key
+    # Get upload specified by a primary key.
     try:
         upload = Upload.objects.get(pk=pk)
     except Upload.DoesNotExist:
         return JsonResponse({'message': 'The upload does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    # PUT request
+
+    # GET request.
     if request.method == 'GET':
         if upload.thematic_page in request.user.can_moderate.all():
-            # delete upload
+            # Remove upload.
             upload.delete()
-            # Notify that item is now rejected and deleted
+            # Notify that item is now rejected and deleted.
             return JsonResponse({'message': 'Upload rejected and deleted!'}, status=status.HTTP_204_NO_CONTENT)
         else:
+            # Notify that user cannot moderate on this page.
             return JsonResponse({'message': "User can't moderate this upload"}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET'])
 def user_with_access_list(request, pk):
-    # user should be logged in
+    # Operates on users who has an access to a thematic page.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get page specified by a primary key
+    # Get page specified by a primary key.
     try:
         page = ThematicPage.objects.get(pk=pk)
     except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
+    # GET request.
     if request.method == 'GET':
         if page in request.user.can_moderate.all():
-            # serialize Users
+            # Serialize an user.
             user_serializer = UserCreateSerializer(page.users, many=True)
-            # return serialized Users
+            # Return serialized user.
             return JsonResponse(user_serializer.data, safe=False)
         else:
-            return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+            # Notify that action is forbidden.
+            return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET'])
 def user_with_no_access_list(request, pk):
-    # user should be logged in
+    # Operates on users who doesn't have an access to a thematic page.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get page specified by a primary key
+    # Get page specified by a primary key.
     try:
         page = ThematicPage.objects.get(pk=pk)
     except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
+    # GET request.
     if request.method == 'GET':
         if page in request.user.can_moderate.all():
-            # get users with no access
+            # Get all users.
             users = User.objects.all()
+            # Exclude users that have access.
             for pk_ in page.users.values('pk'):
                 pk_ = pk_['pk']
                 users = users.exclude(pk=pk_)
-            # serialize Users
+            # Serialize an user.
             user_serializer = UserCreateSerializer(users, many=True)
-            # return serialized Users
+            # Return serialized user.
             return JsonResponse(user_serializer.data, safe=False)
         else:
-            return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+            # Notify that action is forbidden.
+            return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['GET'])
 def users_requesting_access(request, pk):
-    # user should be logged in
+    # Operates on users who request joining to a page.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get page specified by a primary key
+    # Get user specified by a primary key.
     try:
         page = ThematicPage.objects.get(pk=pk)
     except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
+    # GET request.
     if request.method == 'GET':
+        # Check whether user is moderator of a specified page.
         if page in request.user.can_moderate.all():
-            # serialize Users
+            # Serialize an user.
             user_serializer = UserCreateSerializer(page.requested_by, many=True)
-            # return serialized Users
+            # Return serialized user.
             return JsonResponse(user_serializer.data, safe=False)
         else:
-            return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+            # Notify that action is forbidden.
+            return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)
 
 
 @api_view(['POST'])
 def add_user(request, page_pk, user_pk):
-    # user should be logged in
+    # Accept request for joining of a user.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
 
-    # Get page specified by a primary key
+    # Get page specified by a primary key.
     try:
         page = ThematicPage.objects.get(pk=page_pk)
     except ThematicPage.DoesNotExist:
         return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-    # Get user specified by a primary key
+    # Get user specified by a primary key.
     try:
         user = User.objects.get(pk=user_pk)
     except User.DoesNotExist:
         return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
-    # POST request
+
+    # POST request.
     if request.method == 'POST':
+        # Check whether user is moderator of a specified page.
         if page in request.user.can_moderate.all():
+            # Remove request.
             user.requested_pages.remove(page)
+            # Add new follower.
             page.users.add(user)
-            # serialize User
+            # Serialize an user.
             user_serializer = UserCreateSerializer(user)
-            # return serialized User
+            # Return serialized user.
             return JsonResponse(user_serializer.data)
         else:
+            return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['POST'])
+def decline_user(request, page_pk, user_pk):
+    # Decline request for joining of a user.
+
+    # User should be logged in.
+    if request.user.is_anonymous:
+        return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
+
+    # Get page specified by a primary key.
+    try:
+        page = ThematicPage.objects.get(pk=page_pk)
+    except ThematicPage.DoesNotExist:
+        return JsonResponse({'message': 'The Thematic Page does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+    # Get user specified by a primary key.
+    try:
+        user = User.objects.get(pk=user_pk)
+    except User.DoesNotExist:
+        return JsonResponse({'message': 'The user does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+    # POST request.
+    if request.method == 'POST':
+        # Check whether user is moderator of a specified page.
+        if page in request.user.can_moderate.all():
+            # Remove request.
+            user.requested_pages.remove(page)
+            # Return notification.
+            return JsonResponse({'message': "User was declined."})
+        else:
+            # Notify that action is forbidden.
             return JsonResponse({'message': "User can't moderate this page"}, status=status.HTTP_403_FORBIDDEN)
