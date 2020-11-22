@@ -13,31 +13,44 @@ from rest_framework.decorators import api_view
 """
 Available requests:
 Methods	    Urls                                         Actions
+
+views.thematic_pages_list
 GET         /api/user_view/thematic_pages_list           get ThematicPages to view
+
 GET         /api/user_view/not_available_pages_list      get ThematicPages that are not available
+
 GET         /api/user_view/thematic_page_uploads/:pk     get Upload items to view for Thematic Page with defined id
+
 GET         /api/user_view/request_read_rights/:pk       request an access to Thematic Page 
+
 POST         /api/user_view/bookmark/                    Add Upload to Bookmark Page
+
             :bookmark_pk/:upload_pk
 POST        /api/user_view/bookmark/add/                 Add new Bookmark Page
             :page_title
+            
 GET         /api/user_view/bookmark_list                 Get Bookmark Pages for user
+
 GET         /api/user_view/bookmark_uploads/:pk          Get Uploads of Bookmark Page
 """
 
 
 @api_view(['GET'])
 def thematic_pages_list(request):
-    # user should be logged in
+    # Operates on all thematic pages.
+
+    # User should be logged in.
     if request.user.is_anonymous:
         return JsonResponse({'message': "No access"}, status=status.HTTP_403_FORBIDDEN)
-    # get available pages
+
+    # Get all available pages.
     thematic_pages = request.user.can_view
 
+    # GET request.
     if request.method == 'GET':
-        # serialize pages
+        # Serialize pages.
         thematic_page_serializer = ThematicPageSerializer(thematic_pages, many=True)
-        # return serialized page
+        # Return serialized pages.
         return JsonResponse(thematic_page_serializer.data, safe=False)
 
 

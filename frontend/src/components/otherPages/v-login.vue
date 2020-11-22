@@ -31,7 +31,6 @@
                     email: this.email,
                     password: this.password,
                 };
-                //this.$store.dispatch("testlogin");
                 this.$store.dispatch("login", authData);
             }
         }

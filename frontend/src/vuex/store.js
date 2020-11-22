@@ -7,10 +7,18 @@ import router from "../router/router";
 Vue.use(Vuex);
 let store = new Vuex.Store({
     state: {
+
+        currentComments: [],
+
         informationAboutMe: {},
         idToken: null,
         //userId: null,
         currentDoc: {},
+
+        documents: [],
+        openedDocuments: [],
+        tags: []
+
         /*
         documents: [
             {
@@ -43,7 +51,6 @@ let store = new Vuex.Store({
             }],*/
         documents: [],
         openedDocuments: [],
-
     },
     mutations: {
         clearAuthData(state) {
@@ -73,7 +80,7 @@ let store = new Vuex.Store({
             doc.pageNum = page;
         },
         activateTab(state, name) {
-            state.openedDocuments.map((tab) => {
+            state.openedDocuments.forEach((tab) => {
                 tab.title === name ? tab.active = 1 : tab.active = 0;
             });
         },
@@ -93,6 +100,23 @@ let store = new Vuex.Store({
         }
     },
     actions: {
+        getTags({state}){
+            let config = {
+                method: 'get',
+                url: 'http://127.0.0.1:8000/api/storage/tags/',
+                headers: {}
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    state.tags = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+
+        },
         setLogoutTimer({commit}, expirationTime) {
             setTimeout(() => {
                 commit('logout');
@@ -120,7 +144,7 @@ let store = new Vuex.Store({
                         });
                     })
                     .catch(function (error) {
-                        console.log(error);
+                        console.log(error.response.data);
                     });
         },
         logout({commit, state}) {
@@ -163,6 +187,43 @@ let store = new Vuex.Store({
             });
             router.replace('/');
         },
+
+        submitFile({state}, formdata){
+            let config = {
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/storage/uploads/',
+                headers: {
+                    'Authorization': 'Token ' + state.idToken
+                },
+                data : formdata
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+
+        },
+getComments({state}, id){
+    let config = {
+        method: 'get',
+        url: `http://127.0.0.1:8000/api/storage/uploads/comments/${id}/`,
+        headers: {}
+    };
+
+    axios(config)
+        .then(function (response) {
+            state.currentComments = response.data;
+            console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+        },
+
         signup({commit, dispatch}, authData) {//registration
             let flag = true;
             let registration = async () => {
@@ -177,14 +238,28 @@ let store = new Vuex.Store({
                 form.append('track', authData.track);
                 form.append('course', authData.course);
                 await axios.post('/auth/users/', form).then(res => {
-                    console.log(res.data);
-                    commit('authUser', {
-                        token: res.data.auth_token,
-                        //userId: res.data.id
-                    });
+
+                    let id  = res.data.id;
+                    let config = {
+                        method: 'get',
+                        url: 'http://127.0.0.1:8000/auth/create_token/?id=' + id,
+                        headers: {}
+                    };
+                    axios(config)
+                        .then(function (response) {
+                            localStorage.setItem('token', res.data.auth_token);
+                            commit('authUser', {
+                                token: res.data,
+                            });
+                            console.log(JSON.stringify(response.data.auth_token));
+                        })
+                        .catch(function (error) {
+                            console.log(error.response.id);
+                        });
+
                     const now = new Date();
                     const expirationDate = new Date(now.getTime() + 60 * 24 * 3600 * 1000);
-                    localStorage.setItem('token', res.data.auth_token);
+
                     //localStorage.setItem('userId', res.data.id);
                     localStorage.setItem('expirationDate', expirationDate);
                     dispatch('setLogoutTimer', 60 * 24 * 3600);

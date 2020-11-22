@@ -3,7 +3,7 @@
         <div class="info-top">
             <div class="info-tabs">
                 <ul class="nav nav-tabs">
-                    <li class="disabled" v-for="tab in tabs" :key="tab.title" :class="{'active': tab.active}">
+                    <li v-for="tab in tabs" :key="tab.id" :class="{'active' : tab.active}">
                         <a @click="activate(tab.title)">{{tab.title}}</a>
                         <button class="close-icon" @click="closeButton(tab.title)"></button>
                     </li>
@@ -30,13 +30,18 @@
             })
         },
         methods: {
-            ...mapActions({close:'closeDocument', active: 'activateTab', open:'getDocument'}),
+            ...mapActions({close:'closeDocument', active: 'activateTab'}),
             closeButton(name){
                 this.close(name);
             },
             activate(name){
                 this.active(name);
-                this.open();
+                this.check();
+            },
+            check(){
+                this.tabs.forEach((tab)=>{
+                    console.log(tab.active);
+                });
             }
         }
     }

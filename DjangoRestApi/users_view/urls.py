@@ -2,25 +2,17 @@ from django.conf.urls import url
 from users_view import views
 from django.urls import path
 
-
 """
 Defined routes.
-Get Thematic Pages
-/api/user_view/thematic_pages_list GET
-Get Thematic Pages not available for user
-/api/user_view/not_available_pages_list GET
-Get Uploads
-/api/user_view/thematic_page_uploads/:pk GET
-Request an access to thematic page
-/api/user_view/request_read_rights/:pk GET
-Get Bookmark Pages for user
-/api/user_view/bookmark_list GET
-Add new Bookmark Page
-/api/user_view/bookmark/add/:page_title POST
-Add Upload to Bookmark Page
-/api/user_view/bookmark/:bookmark_pk/:upload_pk POST
-Get Uploads of Bookmark Page
-/api/user_view/bookmark_uploads/:pk GET
+
+/api/user_view/thematic_pages_list: GET
+/api/user_view/not_available_pages_list: GET
+/api/user_view/thematic_page_uploads/:pk: GET
+/api/user_view/request_read_rights/:pk: GET
+/api/user_view/bookmark_list: GET
+/api/user_view/bookmark/add/:page_title: POST
+/api/user_view/bookmark/:bookmark_pk/:upload_pk: POST
+/api/user_view/bookmark_uploads/:pk: GET
 """
 
 urlpatterns = [

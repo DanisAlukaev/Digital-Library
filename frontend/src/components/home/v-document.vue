@@ -58,16 +58,17 @@
             }
         },
         computed:{
-            ...mapState({doc:'currentDoc'}),
+            ...mapState({doc:'currentDoc', comm: 'currentComments'}),
 
             url:function(){
                 return ('http://127.0.0.1:8000' + this.doc.file)  || "";
             },
-            comments:function(){return this.doc.comments || [];},
+            comments:function(){return this.comm || [];},
             rating:function(){return this.doc.rating || undefined;},
         },
         watch: {
-            url:function(new_val, old_val){
+            url:function(new_val){
+                this.$store.dispatch('getComments');
                 this.pageNum = this.doc.pageNum || 1;
                 this.fetchPDF(new_val);
             },

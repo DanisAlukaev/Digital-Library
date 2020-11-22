@@ -58,12 +58,22 @@
                                     <div class="list-item-last" v-if="!isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'registration'}">Sign up</router-link></p>
                                     </div>
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'contribute'}">Contribute</router-link></p>
+                                    </div>
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'uploads'}">Uploads</router-link></p>
+                                    </div>
+
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'users'}">Users</router-link></p>
+                                    </div>
                                     <div class="list-item-last" v-if="isAuthenticated">
                                         <p class="list-item-text" @click="logout()">Log out</p>
                                     </div>
                                 </div>
                             </div>
-                            <img src="../../assets/profile.png" alt="" class="avatar">
+                            <img alt="" class="avatar">
                         </div>
                     </div>
                 </div>
@@ -82,6 +92,11 @@
             userName: function(){
                 if(this.info === undefined)return "";
                 return this.info.first_name + " " + this.info.last_name || "";
+            }
+        },
+        watch:{
+            info:function(val){
+                document.querySelector('.avatar').src = val.image;
             }
         },
         created() {
