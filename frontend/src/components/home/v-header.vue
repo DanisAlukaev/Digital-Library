@@ -58,7 +58,6 @@
                                     <div class="list-item-last" v-if="!isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'registration'}">Sign up</router-link></p>
                                     </div>
-
                                     <div class="list-item" v-if="isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'contribute'}">Contribute</router-link></p>
                                     </div>
@@ -69,7 +68,6 @@
                                     <div class="list-item" v-if="isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'users'}">Users</router-link></p>
                                     </div>
-
                                     <div class="list-item-last" v-if="isAuthenticated">
                                         <p class="list-item-text" @click="logout()">Log out</p>
                                     </div>

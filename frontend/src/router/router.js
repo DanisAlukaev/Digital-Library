@@ -21,6 +21,7 @@ let routes = [{
     }
     },
     {
+
         name: 'contribute',
         component: vCon,
         path: "/contribute"

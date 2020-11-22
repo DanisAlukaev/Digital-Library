@@ -3,8 +3,12 @@
         <div class="top-page-control">
             <div class="page-control">
                 <button class="prev-button no-outline" @click="onPrevPage()"></button>
-                <p class="page-control-text">{{pageNum}}/{{pageMax}}</p>
-                <p class="page-control-text">{{scale*100}}%</p>
+
+                <input type="number" value="1" min="1" max="10000">
+                <p class="page-control-text get-rid-of-margins">/{{pageMax}}</p>
+                <input type="number" value="1" min="1" max="10000">
+                <p class="page-control-text get-rid-of-margins">%</p>
+
                 <button class="next-button no-outline" @click="onNextPage()"></button>
             </div>
             <div class="rating">

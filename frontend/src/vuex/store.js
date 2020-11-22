@@ -7,14 +7,50 @@ import router from "../router/router";
 Vue.use(Vuex);
 let store = new Vuex.Store({
     state: {
+
         currentComments: [],
+
         informationAboutMe: {},
         idToken: null,
         //userId: null,
         currentDoc: {},
+
         documents: [],
         openedDocuments: [],
         tags: []
+
+        /*
+        documents: [
+            {
+                name: "DL",
+                type: "document",
+                comments: [
+                    {text: "What is 2+2?", sender: "12k club member"},
+                    {
+                        text: "You should know it from the school. If the question was what is pi, some people would argue that it is 4 or 3, but to answer your question it is obviously 4.",
+                        sender: "Professor Gorodetskiy"
+                    },
+                    {text: "2+2=pi", sender: "36k club member"},
+                    {text: "22", sender: "JavaScript"}],
+                url: 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf',
+                rating: 3.5,
+                pageNum: 1,
+                active: 0
+            },
+            {
+                name: "FSE", type: "document",
+                url: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/examples/learning/helloworld.pdf",
+                active: 0, pageNum: 1
+            },
+            {
+                name: "DE",
+                type: "document",
+                pageNum: 1,
+                active: 0,
+                url: "http://127.0.0.1:8000/media/files/Assignment_3_-_Alukaev_Danis.pdf"
+            }],*/
+        documents: [],
+        openedDocuments: [],
     },
     mutations: {
         clearAuthData(state) {
@@ -151,6 +187,7 @@ let store = new Vuex.Store({
             });
             router.replace('/');
         },
+
         submitFile({state}, formdata){
             let config = {
                 method: 'post',
@@ -186,6 +223,7 @@ getComments({state}, id){
             console.log(error);
         });
         },
+
         signup({commit, dispatch}, authData) {//registration
             let flag = true;
             let registration = async () => {
@@ -200,6 +238,7 @@ getComments({state}, id){
                 form.append('track', authData.track);
                 form.append('course', authData.course);
                 await axios.post('/auth/users/', form).then(res => {
+
                     let id  = res.data.id;
                     let config = {
                         method: 'get',
@@ -220,6 +259,7 @@ getComments({state}, id){
 
                     const now = new Date();
                     const expirationDate = new Date(now.getTime() + 60 * 24 * 3600 * 1000);
+
                     //localStorage.setItem('userId', res.data.id);
                     localStorage.setItem('expirationDate', expirationDate);
                     dispatch('setLogoutTimer', 60 * 24 * 3600);
