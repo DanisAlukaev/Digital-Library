@@ -3,9 +3,18 @@
         <div class="info-top">
             <div class="info-tabs">
                 <ul class="nav nav-tabs">
-                    <li class="disabled" v-for="tab in tabs" :key="tab.name" :class="{'active': tab.active}">
-                        <a @click="activate(tab.name)">{{tab.name}}</a>
-                        <button class="close-icon" @click="closeButton(tab.name)"></button>
+                    <li
+                            class="disabled"
+                            v-for='(tab) in tabs'
+                            :key='tab.title'
+                            :class="{'active': tab.active}">
+                        <a @click="activate(tab.title)">
+                            {{tab.title}}
+                            <!--{{ getDisplayTitle(tab.title) }}-->
+                        </a>
+                        <button class="close-icon" @click="closeButton(tab.title)">
+                            &times;
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -30,14 +39,25 @@
             })
         },
         methods: {
-            ...mapActions({close:'closeDocument', active: 'activateTab', open:'getDocument'}),
-            closeButton(name){
+            ...mapActions({
+                close: 'closeDocument',
+                active: 'activateTab',
+                open: 'getDocument',
+            }),
+            closeButton(name) {
                 this.close(name);
             },
-            activate(name){
+            activate(name) {
                 this.active(name);
-                this.open();
-            }
+            },
+            getDisplayTitle(title) {
+                let display = title;
+                if (display.length > 22) {
+                    display = display.slice(0, 19);
+                    display += "...";
+                }
+                return display;
+            },
         }
     }
 </script>
@@ -45,5 +65,8 @@
 <style scoped>
     .document-block {
         height: 96%;
+    }
+    .v-info .nav-header .tab .close {
+        padding-left: 5px;
     }
 </style>

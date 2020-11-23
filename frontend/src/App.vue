@@ -1,18 +1,20 @@
 <template>
   <div id="app">
-      <v-wrapper></v-wrapper>
+      <router-view></router-view>
+      <!--<v-wrapper></v-wrapper>-->
   </div>
 </template>
 
-<script>import vWrapper from './components/v-wrapper';
+<script>
+    //import vWrapper from './components/v-wrapper';
 export default {
   name: 'App',
   components: {
-    vWrapper
+    //vWrapper
   },
     created() {
-      this.$store.dispatch('fetchUser');
-      this.$store.dispatch('tryAutoLogin');
+      //this.$store.dispatch('fetchUser');
+      //this.$store.dispatch('tryAutoLogin');
     }
 }
 </script>

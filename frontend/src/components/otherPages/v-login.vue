@@ -1,6 +1,6 @@
 <template>
     <div class="text-center login-body">
-        <form class="form-signin">
+        <form class="form-signin" v-on:submit.prevent>
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label for="inputEmail" class="sr-only">Email address</label>
             <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus v-model="email">
@@ -8,7 +8,7 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required v-model="password">
 
-            <button class="btn btn-lg btn-primary btn-block" @click="onSubmit">Sign in</button>
+            <button class="btn btn-lg btn-primary btn-block orange-btn" @click="onSubmit()">Sign in</button>
         </form>
     </div>
 </template>
@@ -22,6 +22,9 @@
                 password:""
             }
         },
+        created() {
+            this.$store.dispatch('tryAutoLogin');
+        },
         methods:{
             onSubmit(){
                 let authData = {
@@ -30,7 +33,7 @@
                 };
                 this.$store.dispatch("login", authData);
             }
-            }
+        }
     }
 </script>
 
@@ -74,5 +77,8 @@
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+    }
+    .btnlogin {
+        background-color: #ffa854 !important;
     }
 </style>

@@ -17,95 +17,114 @@
                     <div class="collapse navbar-collapse" id="navbarToggle">
                         <div class="form-search">
                             <div class="search-block">
-                                <button class="search-icon"></button>
+                                <button class="search-icon" @click="search(searchArg)"></button>
                                 <label for="input-search" class="label-search"></label>
-                                <input type="text" required id="input-search">
+                                <input type="text" required id="input-search" v-model="searchArg">
+                                <!--
                                 <div class="dropdown-search">
-                                    <div class="list-item-search">
-                                        <p class="list-item-text-search-bold">Topics:</p>
-                                        <p class="list-item-text-search">Probability Theory</p>
-                                        <p class="list-item-text-search">Probability and Statistics</p>
-                                    </div>
-                                    <div class="list-item-search">
-                                        <p class="list-item-text-search-bold">Documents:</p>
-                                        <p class="list-item-text-search">Probability Theory Textbook by somebody</p>
-                                        <p class="list-item-text-search">Probability and Statistics Textbook by somebody</p>
-                                    </div>
-                                    <div class="list-item-search">
-                                        <p class="list-item-text-search-bold">Images:</p>
-                                        <p class="list-item-text-search">Whatever</p>
-                                        <p class="list-item-text-search">Whatever</p>
-                                    </div>
                                     <div class="list-item-search-last">
                                         <p class="list-item-text-search-bold">Videos:</p>
                                         <p class="list-item-text-search">Whatever</p>
                                         <p class="list-item-text-search">Whatever</p>
                                     </div>
                                 </div>
+                                -->
                             </div>
-                            <!--<button class="upload-icon"></button>-->
                         </div>
                         <div class="navbar-nav profile">
                             <div class="name-profile nav-link header-font-size">
-                                {{name}}
+                                {{userName}}
                                 <div class="dropdown-profile">
-                                    <div class="list-item" v-if="isAuthenticated">
-                                        <p class="list-item-text"><router-link :to="{name: 'profile'}">My account</router-link></p>
+                                    <div class="list-item-profile" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'profile'}">My profile</router-link></p>
                                     </div>
-                                    <div class="list-item" v-if="!isAuthenticated">
+                                    <div class="list-item-profile" v-if="!isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'login'}">Sign in</router-link></p>
                                     </div>
-                                    <div class="list-item-last" v-if="!isAuthenticated">
+                                    <div class="list-item-profile-last" v-if="!isAuthenticated">
                                         <p class="list-item-text"><router-link :to="{name: 'registration'}">Sign up</router-link></p>
                                     </div>
+
+                                    <div class="list-item-profile" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'contribute'}">Contribute</router-link></p>
+                                    </div>
+                                    <!--
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'uploads'}">Uploads</router-link></p>
+                                    </div>
+
+                                    <div class="list-item" v-if="isAuthenticated">
+                                        <p class="list-item-text"><router-link :to="{name: 'users'}">Users</router-link></p>
+                                    </div>
+                                    -->
                                     <div class="list-item-last" v-if="isAuthenticated">
-                                        <p class="list-item-text">Log out</p>
+                                        <a class="list-item-text" @click="logout()">Log out</a>
                                     </div>
                                 </div>
                             </div>
-                            <img src="../../assets/profile.png" alt="" class="avatar">
+                            <img alt="" class="avatar">
                         </div>
                     </div>
                 </div>
             </nav>
         </header>
-        <!--
-        <div class="home">
-            <router-link :to="{name: 'home'}">
-                <p class="nav-bar-item">Home</p>
-            </router-link>
-        </div>
-        <div class="log-in">
-            <b-button pill variant="info" v-b-modal="'log_in_form'" class="log-in-button">Log-in</b-button>
-
-        </div>
-        <b-modal size="lg" id='log_in_form' centered title="Enter your login and password" ok-only button-size="lg" ok-variant="info">
-			<template v-slot:modal-footer="{ ok }">
-				<b-button size="sm" variant="info" @click="ok()" class="log-in-form-button" pill>Log in</b-button>
-			</template>
-            <b-form-input :id="'login'" :name="'log-in-input'" :type="'text'" :placeholder="'Login'" size="sm" required class="input-search"></b-form-input>
-			<b-form-input :id="'password'" :name="'log-in-input'" :type="'password'" :placeholder="'Password'" size="sm" required class="input-search"></b-form-input>
-			<b-form-checkbox :id="'remember'" :name="'log-in-input'" v-model="selected">Remember me</b-form-checkbox>
-        </b-modal>
-        -->
     </div>
 </template>
 
 <script>
-    import {mapGetters} from "vuex";
+    import {mapGetters, mapState} from "vuex";
     export default {
         name: 'v-header',
         data: function(){
             return {
-                name: 'Miley Cyrus'
+                searchArg: '',
+                elements: []
             }
         },
         computed: {
-            ...mapGetters(["isAuthenticated"])
+            ...mapState({info:'informationAboutMe', documents: 'documents'}),
+            ...mapGetters(["isAuthenticated"]),
+            userName: function(){
+                if(this.info === undefined)return "";
+                return this.info.first_name + " " + this.info.last_name || "";
+            }
         },
-		methods: {}
+        watch:{
+            info:function(val){
+                document.querySelector('.avatar').src = val.image;
+            }
+        },
+        activated() {
+            this.$store.dispatch('getInfo');
+        },
+        created() {
+            this.$store.dispatch('getInfo');
+        },
+        methods: {
+            logout(){
+                this.$store.dispatch('logout');
+            },
+            search(arg){
+                let data = {
+                    tags: [],
+                    title: arg
+                };
+                this.$store.dispatch('search', data);
+            }
+        }
     }
 </script>
 
 <style scoped>
+    .list-item-profile {
+        height: 4vh;
+        margin: 0 5% 0 5%;
+        cursor: pointer;
+        border-bottom: 1px solid #9b9b9b;
+    }
+    .list-item-profile-last {
+        height: 4vh;
+        margin: 0 5% 0 5%;
+        cursor: pointer;
+    }
 </style>
