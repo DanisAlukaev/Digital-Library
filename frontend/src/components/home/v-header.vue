@@ -35,7 +35,11 @@
                             <div class="name-profile nav-link header-font-size">
                                 {{userName}}
                                 <div class="dropdown-profile">
+<<<<<<< HEAD
                                     <div class="list-item-profile" v-if="isAuthenticated">
+=======
+                                    <div class="list-item" v-if="isAuthenticated">
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                                         <p class="list-item-text"><router-link :to="{name: 'profile'}">My profile</router-link></p>
                                     </div>
                                     <div class="list-item-profile" v-if="!isAuthenticated">
@@ -45,7 +49,11 @@
                                         <p class="list-item-text"><router-link :to="{name: 'registration'}">Sign up</router-link></p>
                                     </div>
 
+<<<<<<< HEAD
                                     <div class="list-item-profile" v-if="isAuthenticated">
+=======
+                                    <div class="list-item" v-if="isAuthenticated">
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                                         <p class="list-item-text"><router-link :to="{name: 'contribute'}">Contribute</router-link></p>
                                     </div>
                                     <!--
@@ -58,7 +66,11 @@
                                     </div>
                                     -->
                                     <div class="list-item-last" v-if="isAuthenticated">
+<<<<<<< HEAD
                                         <a class="list-item-text" @click="logout()">Log out</a>
+=======
+                                        <p class="list-item-text" @click="logout()">Log out</p>
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                                     </div>
                                 </div>
                             </div>
@@ -75,6 +87,7 @@
     import {mapGetters, mapState} from "vuex";
     export default {
         name: 'v-header',
+<<<<<<< HEAD
         data: function(){
             return {
                 searchArg: '',
@@ -89,10 +102,21 @@
                 return this.info.first_name + " " + this.info.last_name || "";
             }
         },
+=======
+        computed: {
+            ...mapState({info:'informationAboutMe'}),
+            ...mapGetters(["isAuthenticated"]),
+            userName: function(){
+                if(this.info === undefined)return "";
+                return this.info.first_name + " " + this.info.last_name || "";
+            }
+        },
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
         watch:{
             info:function(val){
                 document.querySelector('.avatar').src = val.image;
             }
+<<<<<<< HEAD
         },
         activated() {
             this.$store.dispatch('getInfo');
@@ -110,6 +134,15 @@
                     title: arg
                 };
                 this.$store.dispatch('search', data);
+=======
+        },
+        created() {
+            this.$store.dispatch('getInfo');
+        },
+        methods: {
+            logout(){
+                this.$store.dispatch('logout');
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
             }
         }
     }

@@ -1,7 +1,11 @@
 <template>
     <div>
         <div class="list-wrapper">
+<<<<<<< HEAD
             <div class="list-item" @click="openItem(doc,index)" v-for='(doc,index) in docs' :key="doc.title">
+=======
+            <div class="list-item" @click="openItem(doc,index)" v-for='(doc,index) in documents' :key="doc.title">
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                 <div class="list-item-icon" :class="{
                     'list-item-icon-document': doc.type ==='document',
                     'list-item-icon-video': doc.type ==='video',
@@ -28,11 +32,15 @@
             }
         },
         methods: {
+<<<<<<< HEAD
             openTh(th){
                 this.$store.dispatch('openFolder',th);
             },
             openItem(doc, i) {
                 if(doc.type === 'folder')this.openTh(doc);
+=======
+            openItem(doc, i) {
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                 if (this.openedDocuments.every(d => d.id !== doc.id)) {
                     this.open(doc);
                 }
@@ -42,6 +50,7 @@
         },
         created() {
             this.getList();
+<<<<<<< HEAD
             this.$store.dispatch('getThematicalPages');
         },
         activated() {
@@ -58,6 +67,15 @@
             }
         },
         watch: {}
+=======
+        },
+        computed: {
+            ...mapState([
+                'documents',
+                'openedDocuments'
+            ])
+        }
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
     }
 </script>
 

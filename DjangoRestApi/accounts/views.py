@@ -7,14 +7,6 @@ from django.http.response import JsonResponse
 from accounts.models import User
 
 
-@api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def restricted(request, *args, **kwargs):
-    # Demonstration of an approach to restrict accessing of routes.
-    # Correspondent route is available only for logged-in users.
-    return Response(data="Only for Logged in User", status=status.HTTP_200_OK)
-
-
 @api_view(['GET', ])
 def create_token(request):
     # Creates token session.
@@ -32,6 +24,6 @@ def create_token(request):
                 # Create token session.
                 token = Token.objects.create(user=user)
                 # Return JSON with token.
-                return JsonResponse(str(token), safe=False)
+                return JsonResponse({'auth_token': str(token)}, safe=False)
     # If some conditions are not satisfied, then return a message.
     return JsonResponse({'message': 'Cannot create a token'}, status=status.HTTP_204_NO_CONTENT)

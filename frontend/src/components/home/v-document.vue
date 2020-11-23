@@ -75,10 +75,17 @@
             },
             url() {
                 if(this.doc.type === 'link')return "";
+<<<<<<< HEAD
                 return ('https://digital-library-iu.herokuapp.com' + this.doc.file)  || "";
             },
             comments() {
                 return this.comm || [];
+=======
+                return ('http://127.0.0.1:8000' + this.doc.file)  || "";
+            },
+            comments() {
+                return this.doc.comments || [];
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
             },
             rating() {
                 return this.doc.rating || undefined;
@@ -98,7 +105,11 @@
                     id: this.doc.id
                 };
                 this.$store.dispatch('createComment', data);
+<<<<<<< HEAD
                 this.message = '';
+=======
+                this.$store.dispatch('getComments', this.doc.id);
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
             },
             dropdownComments(){
                 if(!this.dropdown)document.querySelector(".rating").style.borderBottomLeftRadius = 0;

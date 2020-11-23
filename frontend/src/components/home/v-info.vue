@@ -9,8 +9,12 @@
                             :key='tab.title'
                             :class="{'active': tab.active}">
                         <a @click="activate(tab.title)">
+<<<<<<< HEAD
                             {{tab.title}}
                             <!--{{ getDisplayTitle(tab.title) }}-->
+=======
+                            {{ tab.title }}
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                         </a>
                         <button class="close-icon" @click="closeButton(tab.title)">
                             &times;
@@ -49,6 +53,7 @@
             },
             activate(name) {
                 this.active(name);
+<<<<<<< HEAD
             },
             getDisplayTitle(title) {
                 let display = title;
@@ -58,6 +63,9 @@
                 }
                 return display;
             },
+=======
+            }
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
         }
     }
 </script>

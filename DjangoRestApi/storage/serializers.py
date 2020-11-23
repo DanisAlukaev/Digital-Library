@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from storage.models import Upload, Tag, BookmarkPage
+from storage.models import Upload, Tag, BookmarkPage, Comment
+from accounts.serializers import UserCreateSerializer
+from thematic_pages.serializers import ThematicPageSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -19,6 +21,27 @@ class TagSerializer(serializers.ModelSerializer):
         return Tag.objects.get(id=data)
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    """
+    Class that manages serialization and deserialization of Comment model from JSON.
+    It inherits from rest_framework.serializers.ModelSerializer superclass
+    which automatically populates a set of fields and default validators.
+    """
+
+    user = UserCreateSerializer(required=False)
+
+    class Meta:
+        # The model class for Serializer.
+        model = Comment
+        # A tuple of field names to be included in the serialization.
+        fields = ['id',
+                  'upload',
+                  'user',
+                  'content',
+                  'date']
+        extra_kwargs = {'user': {'required': False}}
+
+
 class UploadSerializer(serializers.ModelSerializer):
     """
     Class that manages serialization and deserialization of Upload model from JSON.
@@ -26,10 +49,12 @@ class UploadSerializer(serializers.ModelSerializer):
     which automatically populates a set of fields and default validators.
     """
 
+    user = UserCreateSerializer(required=False)
+
     # File serialization.
     file = serializers.FileField(max_length=None, use_url=True, required=False)
     # Multiple Tag serialization.
-    tags = TagSerializer(many=True)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         # The model class for Serializer.
@@ -53,7 +78,11 @@ class UploadSerializer(serializers.ModelSerializer):
         # Describes the process of fields deserialization for object creation.
 
         # Retrieve tags parameters.
-        tags_data = validated_data.pop('tags')
+        try:
+            tags_data = validated_data.pop('tags')
+        except Exception:
+            tags_data = []
+
         # Create a new instance of an upload.
         upload = Upload.objects.create(**validated_data)
         # Put tags in new upload.
@@ -65,12 +94,17 @@ class UploadSerializer(serializers.ModelSerializer):
         # Describes the process of fields deserialization for object update.
 
         # Retrieve tags parameters.
-        tags_data = validated_data.pop('tags')
+        try:
+            tags_data = validated_data.pop('tags')
+        except Exception:
+            tags_data = []
+
         # Update title, type, innopoints, status field.
         instance.title = validated_data.get('title', instance.title)
         instance.type = validated_data.get('type', instance.type)
         instance.innopoints = validated_data.get('innopoints', instance.innopoints)
         instance.status = validated_data.get('status', instance.status)
+        instance.thematic_page = validated_data.get('thematic_page', instance.thematic_page)
         # Clear tags field.
         instance.tags.clear()
         # Set new tags.

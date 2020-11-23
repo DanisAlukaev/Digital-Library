@@ -75,14 +75,22 @@ body {
 	color: #000 !important;
 	text-decoration: none;
 	background-color: transparent;
+<<<<<<< HEAD
     width: 16vh;
+=======
+    width: 10vh;
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
     overflow: hidden;
 	
 }
 .nav>li {
     border-radius: 0;
 	float: left;
+<<<<<<< HEAD
     width: 18vh;
+=======
+    width: 14vh;
+>>>>>>> a226abd2038862d474bbfba3095187947072d3fa
     padding: 0;
 	margin-bottom: 0;
     margin-left: 0;
