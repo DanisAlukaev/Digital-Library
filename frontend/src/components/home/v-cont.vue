@@ -2,12 +2,12 @@
     <div class="bg-light">
         <div class="container">
             <div class="py-5 text-center">
-                <h2>Contribute to Digital Library</h2>
-                <p class="lead">Here you can upload materials to Digital Library. Please fill the fields carefully and submit for consideration.</p>
+                <h2 class="text-center">Contribute to Digital Library</h2>
+                <p class="text-center lead">Here you can upload materials to Digital Library. Please fill the fields carefully and submit for consideration.</p>
             </div>
 
             <div class="row">
-
+				<!---
                 <div class="col-md-4 order-md-2 mb-4">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-muted">Your contributions</span>
@@ -44,7 +44,7 @@
                     </div>
 
                 </div>
-
+				-->
                 <div class="col-md-8 order-md-1">
                     <h4 class="mb-3">Information about material</h4>
                     <form class="needs-validation" novalidate v-on:submit.prevent>
@@ -120,7 +120,7 @@
                             </div>
                         </div>
                         <hr class="mb-4">
-                        <button class="btn btn-primary btn-lg btn-block" type="submit" @click="onSubmit()">Contribute</button>
+                        <button class="btn btn-primary btn-lg btn-block orange-btn" type="submit" @click="onSubmit()">Contribute</button>
                     </form>
                 </div>
             </div>
@@ -137,7 +137,7 @@
                 file: '',
                 type: 'Document',
                 link: '',
-                title: "DE Holodov",
+                title: '',
                 //description: "Pdf Lectures of BS19",
                 thUpload: [],
                 tagsUpload: []
@@ -186,6 +186,7 @@
 <style scoped>
     .container {
         max-width: 960px;
+		padding: 0 15%;
     }
 
     .lh-condensed { line-height: 1.25; }
