@@ -28,7 +28,7 @@ class CommentSerializer(serializers.ModelSerializer):
     which automatically populates a set of fields and default validators.
     """
 
-    user = UserCreateSerializer()
+    user = UserCreateSerializer(required=False)
 
     class Meta:
         # The model class for Serializer.

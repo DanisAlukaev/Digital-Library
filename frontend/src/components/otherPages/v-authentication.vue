@@ -8,9 +8,6 @@
                 <div class="col-md-4 order-md-2 mb-4">
                     <p class="lead">Please fill the fields below with your data.</p>
                 </div>
-                <div class="col-md-4 order-md-2 mb-4">
-                    <button class="btn btn-lg btn-primary btn-block" @click="go_to_login()">I'm already registered</button>
-                </div>
             </div>
             <div class="row">
                 <div class="col-md-4 order-md-2 mb-4">
@@ -45,20 +42,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <div class="mb-3">
-                            <label for="username">Username</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">@</span>
-                                </div>
-                                <input type="text" class="form-control" id="username" placeholder="Username" required v-model="user_name">
-                                <div class="invalid-feedback" style="width: 100%;">
-                                    Your username is required.
-                                </div>
-                            </div>
-                        </div>
-                        -->
                         <div class="mb-3">
                             <label for="email">Email<span class="text-muted"></span></label>
                             <input type="email" class="form-control" id="email" placeholder="you@innopolis.university" required v-model="email">
@@ -128,9 +111,14 @@
                                 </div>
                             </div>
                             <hr class="mb-4">
+                            <div class="row">
+                                <div class="mb-3">
+                                    <button class="btn btn-lg btn-primary btn-block orange-btn" @click="onSubmit()">Registrate</button>
+                                </div>
 
-                            <div class="mb-3">
-                                <button class="btn btn-lg btn-primary btn-block" @click="onSubmit()">Registrate</button>
+                                <div class="col-md-4 order-md-2 mb-4">
+                                    <p class="" @click="go_to_login()">I'm already registered</p>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -151,9 +139,9 @@
                 email:"qwe@innopolis.university",
                 password:"qwe123rty567",
                 re_password:"qwe123rty567",
-                track: "Computer Science",
-                course: "1",
-                degree: "Bachelor",
+                track: "",
+                course: "",
+                degree: "",
                 degree_mas: "",
                 degree_bach: "",
                 track_availability: ""
@@ -214,8 +202,16 @@
 
 <style scoped>
     .container {
+        padding-left: 11%;
+        padding-right: 11%;
+        height: 100vh;
         max-width: 960px;
     }
-
+    .register-btn{
+        margin: 1%;
+    }
+    .btnregister {
+        background-color: #ffa854 !important;
+    }
     .lh-condensed {line-height: 1.25;}
 </style>

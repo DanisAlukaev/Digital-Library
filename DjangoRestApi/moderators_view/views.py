@@ -78,6 +78,7 @@ def moderate_page(request, pk):
 
     # GET request.
     if request.method == 'GET':
+        # Check whether user is moderator of a specified page.
         if page in request.user.can_moderate.all():
             # Serialize uploads.
             upload_serializer = UploadSerializer(upload, many=True)
@@ -104,6 +105,7 @@ def approve_upload(request, pk):
 
     # GET request.
     if request.method == 'GET':
+        # Check whether user is moderator of a specified page.
         if upload.thematic_page in request.user.can_moderate.all():
             # Approve upload.
             upload.status = 1
@@ -130,6 +132,7 @@ def reject_upload(request, pk):
 
     # GET request.
     if request.method == 'GET':
+        # Check whether user is moderator of a specified page.
         if upload.thematic_page in request.user.can_moderate.all():
             # Remove upload.
             upload.delete()
@@ -156,6 +159,7 @@ def user_with_access_list(request, pk):
 
     # GET request.
     if request.method == 'GET':
+        # Check whether user is moderator of a specified page.
         if page in request.user.can_moderate.all():
             # Serialize an user.
             user_serializer = UserCreateSerializer(page.users, many=True)

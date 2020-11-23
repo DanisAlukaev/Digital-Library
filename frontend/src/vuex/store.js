@@ -4,53 +4,21 @@ import globalAxios from 'axios';
 import axios from './axios-auth';
 import router from "../router/router";
 
+let FormData = require('form-data');
+
 Vue.use(Vuex);
 let store = new Vuex.Store({
     state: {
-
+        bookmarks: [],
         currentComments: [],
-
         informationAboutMe: {},
         idToken: null,
+        thematicalPages: [],
         //userId: null,
         currentDoc: {},
-
         documents: [],
         openedDocuments: [],
         tags: []
-
-        /*
-        documents: [
-            {
-                name: "DL",
-                type: "document",
-                comments: [
-                    {text: "What is 2+2?", sender: "12k club member"},
-                    {
-                        text: "You should know it from the school. If the question was what is pi, some people would argue that it is 4 or 3, but to answer your question it is obviously 4.",
-                        sender: "Professor Gorodetskiy"
-                    },
-                    {text: "2+2=pi", sender: "36k club member"},
-                    {text: "22", sender: "JavaScript"}],
-                url: 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf',
-                rating: 3.5,
-                pageNum: 1,
-                active: 0
-            },
-            {
-                name: "FSE", type: "document",
-                url: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/examples/learning/helloworld.pdf",
-                active: 0, pageNum: 1
-            },
-            {
-                name: "DE",
-                type: "document",
-                pageNum: 1,
-                active: 0,
-                url: "http://127.0.0.1:8000/media/files/Assignment_3_-_Alukaev_Danis.pdf"
-            }],*/
-        documents: [],
-        openedDocuments: [],
     },
     mutations: {
         clearAuthData(state) {
@@ -62,15 +30,18 @@ let store = new Vuex.Store({
             //state.userId = authData.userId;
         },
         openDocument(state, doc) {
-            if (state.openedDocuments.length === 0) doc.active = 1;
-            else doc.active = 0;
+            if (state.openedDocuments.length === 0)
+                doc.active = 1;
+            else
+                doc.active = 0;
             state.openedDocuments.push(doc);
+            state.currentDoc = doc;
         },
         closeDocument(state, name) {
             if (state.openedDocuments.length === 1) return;
             state.openedDocuments = state.openedDocuments.filter((tab, i) => {
                 if (name === tab.title && tab.active === 1 && state.openedDocuments.length > 0) state.openedDocuments[0].active = 1;
-                if (i === 0 && name === tab.title && tab.active && state.openedDocuments.length > 1) state.openedDocuments[1].active = 1;
+                if (i === 0 && name === tab.title && tab.active === 1 && state.openedDocuments.length > 1) state.openedDocuments[1].active = 1;
                 if (name === tab.title) tab.pageNum = 1;
 
                 return name !== tab.title;
@@ -80,9 +51,13 @@ let store = new Vuex.Store({
             doc.pageNum = page;
         },
         activateTab(state, name) {
-            state.openedDocuments.forEach((tab) => {
-                tab.title === name ? tab.active = 1 : tab.active = 0;
-            });
+            state.openedDocuments = state.openedDocuments.map(tab => ({
+                ...tab,
+                active: tab.title === name,
+            }));
+            //console.log(state.currentDoc);
+            //console.log(state.openedDocuments[0]);
+            state.currentDoc = state.openedDocuments.find(tab => tab.active);
         },
         getDocument(state) {
             state.openedDocuments.forEach((doc) => {
@@ -100,6 +75,23 @@ let store = new Vuex.Store({
         }
     },
     actions: {
+        getThematicalPages({state}){
+            let config = {
+                method: 'get',
+                url: 'http://127.0.0.1:8000/api/user_view/thematic_pages_list',
+                headers: {
+                    'Authorization': 'Token ' + state.idToken
+                }
+            };
+            axios(config)
+                .then(function (response) {
+                    state.thematicalPages = response.data;
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+        },
         getTags({state}){
             let config = {
                 method: 'get',
@@ -109,7 +101,7 @@ let store = new Vuex.Store({
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                    //console.log(JSON.stringify(response.data));
                     state.tags = response.data;
                 })
                 .catch(function (error) {
@@ -121,6 +113,24 @@ let store = new Vuex.Store({
             setTimeout(() => {
                 commit('logout');
             }, expirationTime * 1000);
+        },
+        changeInfo({state}, data){
+            let config = {
+                method: 'put',
+                url: 'http://127.0.0.1:8000/auth/users/me/',
+                headers: {
+                    'Authorization': 'Token ' + state.idToken
+                },
+                data : data
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
         },
         getList({state}){
             let config = {
@@ -187,15 +197,60 @@ let store = new Vuex.Store({
             });
             router.replace('/');
         },
-
         submitFile({state}, formdata){
+            let flag = true;
+            let sub = async()=>{
+                let config = {
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/storage/uploads/',
+                    headers: {
+                        'Authorization': 'Token ' + state.idToken
+                    },
+                    data : formdata
+                };
+                await axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        flag = false;
+                        console.log(error.response.data);
+                    });
+            };
+            (async () => {
+                await sub();
+                if (flag) router.replace('/');
+            })();
+        },
+        getBookmarks({state}){
             let config = {
-                method: 'post',
-                url: 'http://127.0.0.1:8000/api/storage/uploads/',
+                method: 'get',
+                url: 'http://127.0.0.1:8000/api/user_view/bookmark_list',
                 headers: {
                     'Authorization': 'Token ' + state.idToken
+                }
+            };
+
+            axios(config)
+                .then(function (response) {
+                    state.bookmarks = response.data;
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+        },
+        createComment({state}, payload){
+            console.log(payload);
+            let data = JSON.stringify({"content": payload.content,"upload": payload.id});
+            let config = {
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/storage/comments/',
+                headers: {
+                    'Authorization': 'Token '+ state.idToken,
+                    'Content-Type': 'application/json'
                 },
-                data : formdata
+                data : data
             };
 
             axios(config)
@@ -205,7 +260,6 @@ let store = new Vuex.Store({
                 .catch(function (error) {
                     console.log(error.response.data);
                 });
-
         },
 getComments({state}, id){
     let config = {
@@ -223,11 +277,9 @@ getComments({state}, id){
             console.log(error);
         });
         },
-
         signup({commit, dispatch}, authData) {//registration
             let flag = true;
             let registration = async () => {
-                let FormData = require('form-data');
                 let form = new FormData();
                 form.append('first_name', authData.first_name);
                 form.append('last_name', authData.last_name);
@@ -237,34 +289,33 @@ getComments({state}, id){
                 form.append('degree', authData.degree);
                 form.append('track', authData.track);
                 form.append('course', authData.course);
+                let id;
                 await axios.post('/auth/users/', form).then(res => {
-
-                    let id  = res.data.id;
-                    let config = {
-                        method: 'get',
-                        url: 'http://127.0.0.1:8000/auth/create_token/?id=' + id,
-                        headers: {}
-                    };
-                    axios(config)
-                        .then(function (response) {
-                            localStorage.setItem('token', res.data.auth_token);
-                            commit('authUser', {
-                                token: res.data,
-                            });
-                            console.log(JSON.stringify(response.data.auth_token));
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.id);
-                        });
-
-                    const now = new Date();
-                    const expirationDate = new Date(now.getTime() + 60 * 24 * 3600 * 1000);
-
-                    //localStorage.setItem('userId', res.data.id);
-                    localStorage.setItem('expirationDate', expirationDate);
-                    dispatch('setLogoutTimer', 60 * 24 * 3600);
+                    id  = res.data.id;
                 })
                     .catch(error => {
+                        console.log(error.response.data);
+                        flag = false;
+                    });
+                let config = {
+                    method: 'get',
+                    url: 'http://127.0.0.1:8000/auth/create_token/?id=' + id,
+                    headers: {}
+                };
+                await axios(config)
+                    .then(function (response) {
+                        const now = new Date();
+                        const expirationDate = new Date(now.getTime() + 60 * 24 * 3600 * 1000);
+                        //localStorage.setItem('userId', res.data.id);
+                        localStorage.setItem('expirationDate', expirationDate);
+                        dispatch('setLogoutTimer', 60 * 24 * 3600);
+                        localStorage.setItem('token', response.data.auth_token);
+                        commit('authUser', {
+                            token: response.data.auth_token,
+                        });
+                        console.log(JSON.stringify(response.data.auth_token));
+                    })
+                    .catch(function (error) {
                         console.log(error.response.data);
                         flag = false;
                     });
@@ -334,10 +385,11 @@ getComments({state}, id){
             };
             axios(config)
                 .then(function (response) {
+                    //console.log(response.data);
                     commit('getInfo', response.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error.response.data);
                 });
 
         }

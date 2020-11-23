@@ -1,12 +1,15 @@
 <template>
     <div class="v-document">
         <div class="top-page-control">
-            <div class="page-control">
+            <div class="page-control" v-show="!typeLink">
                 <button class="prev-button no-outline" @click="onPrevPage()"></button>
-
-                <input type="number" value="1" min="1" max="10000">
+                <!--
+                <p class="page-control-text">{{pageNum}}/{{pageMax}}</p>
+                <p class="page-control-text">{{scale*100}}%</p>
+                -->
+                <input type="number" value="1" min="1" max="10000" v-model.lazy.number="pageNum" v-on:change="changePage(pageNum)">
                 <p class="page-control-text get-rid-of-margins">/{{pageMax}}</p>
-                <input type="number" value="1" min="1" max="10000">
+                <input type="number" value="1" min="1" max="10000" v-model.lazy.number="scale" v-on:change="changeScale(scale)">
                 <p class="page-control-text get-rid-of-margins">%</p>
 
                 <button class="next-button no-outline" @click="onNextPage()"></button>
@@ -16,26 +19,32 @@
                 <button class="comments-icon no-outline" @click="dropdownComments()"></button>
                 <div class="dropdown-comments" v-show="dropdown">
                     <div class="comments">
-                        <div v-for="comment in comments" :key="comment.text" class="comment">
+                        <div v-for="comment in comments" :key="comment.id" class="comment">
                             <div class="comment-avatar">
                                 <img src="../../assets/profile.png" alt="" class="avatar">
                             </div>
                             <div class="comment-block">
-                                <p class="list-item-text-search-bold">{{comment.sender}}</p>
-                                <p class="list-item-text-search">{{comment.text}}</p>
+                                <p class="list-item-text-search-bold">{{comment.user.first_name + " "+ comment.user.last_name}}</p>
+                                <p class="list-item-text-search">{{comment.content}}</p>
                                 <p class="comments-reply list-item-text-search-bold">Reply</p>
                             </div>
                         </div>
                     </div>
                     <div class="comments-add-block">
-                        <textarea rows="5" placeholder="Add a comment" class="comments-add"></textarea>
-                        <button class="comments-add-button"></button>
+                        <textarea rows="5" placeholder="Add a comment" class="comments-add" v-model="message"></textarea>
+                        <button class="comments-add-button" @click="createMessage()"></button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="pdf-document">
+        <div class="pdf-document" v-show="!typeLink">
             <canvas id="the-canvas"></canvas>
+        </div>
+        <div v-show="typeLink" class="pdf-document">
+            <a class="link-to-see" :href="doc.link">{{doc.link}}</a>
+        </div>
+        <div class="document-title-block">
+            <p class="document-title">{{doc.title}}</p>
         </div>
     </div>
 </template>
@@ -47,8 +56,9 @@
         name: "v-content",
         data: function(){
             return {
+                message: "",
                 dropdown: false,
-                scale: 1,
+                scale: 100,
                 pdf: undefined,
                 pages: [],
                 pageRendering: false,
@@ -59,21 +69,37 @@
         },
         computed:{
             ...mapState({doc:'currentDoc', comm: 'currentComments'}),
-
-            url:function(){
+            typeLink:function(){
+                if(this.doc.type === 'link')return true;
+                return false;
+            },
+            url() {
+                if(this.doc.type === 'link')return "";
                 return ('http://127.0.0.1:8000' + this.doc.file)  || "";
             },
-            comments:function(){return this.comm || [];},
-            rating:function(){return this.doc.rating || undefined;},
+            comments() {
+                return this.doc.comments || [];
+            },
+            rating() {
+                return this.doc.rating || undefined;
+            }
         },
         watch: {
             url:function(new_val){
-                this.$store.dispatch('getComments');
+                this.$store.dispatch('getComments', this.doc.id);
                 this.pageNum = this.doc.pageNum || 1;
-                this.fetchPDF(new_val);
-            },
+                if(new_val !=="")this.fetchPDF(new_val);
+            }
         },
         methods: {
+            createMessage(){
+                let data = {
+                    content: this.message,
+                    id: this.doc.id
+                };
+                this.$store.dispatch('createComment', data);
+                this.$store.dispatch('getComments', this.doc.id);
+            },
             dropdownComments(){
                 if(!this.dropdown)document.querySelector(".rating").style.borderBottomLeftRadius = 0;
                 else document.querySelector(".rating").style.borderBottomLeftRadius = "2vh";
@@ -100,7 +126,7 @@
                 let canvas = document.getElementById('the-canvas');
                 let context = canvas.getContext('2d');
                 this.pdf.getPage(i).then((page) => {
-                    let viewport = page.getViewport({scale: this.scale});
+                    let viewport = page.getViewport({scale: this.scale/100});
                     canvas.height = viewport.height;
                     canvas.width = viewport.width;
                     let renderTask = page.render({
@@ -137,6 +163,24 @@
 </script>
 
 <style scoped>
+    .link-to-see {
+        font-size: 16px;
+    }
+    .document-title-block {
+        padding: 0;
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        background: #9d9d9d;
+    }
+    .document-title{
+        color: white;
+        margin: 0;
+    }
+
     .comments-add-button {
         position: absolute;
         top: 1vh;
@@ -157,6 +201,8 @@
         height: 100%;
         border: none;
         outline: none;
+        background: white;
+        color: black;
     }
     .comments-add-block {
         width: calc(90% - 3vh);

@@ -24,9 +24,11 @@ body {
     display: block;
 }
 .container{
-  margin: 0 !important;
+  margin: 0 auto !important;
   width: 100% !important;
   max-width: none !important;
+    color: #888;
+    font-size: 0.9em;
 }
 .profile {
   width: 100%;
@@ -68,17 +70,18 @@ body {
 	display: block;
     border: none;
 	height: 80%;
+    font-size: 10px;
 	color: #000 !important;
 	text-decoration: none;
 	background-color: transparent;
-    width: 5vh;
+    width: 10vh;
     overflow: hidden;
 	
 }
 .nav>li {
     border-radius: 0;
 	float: left;
-    width: 11vh;
+    width: 14vh;
     padding: 0;
 	margin-bottom: 0;
     margin-left: 0;
