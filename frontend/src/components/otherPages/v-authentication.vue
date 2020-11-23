@@ -1,7 +1,6 @@
 <template>
     <div class="bg-light">
         <div class="container">
-<<<<<<< HEAD
             <div class="row">
                 <div class="pt-5 mx-auto text-center">
                     <h2>Welcome to Digital Library!</h2>
@@ -9,13 +8,6 @@
             </div>
             <div class="row">
                 <div class="pb-2 mb-4 mx-auto text-center">
-=======
-            <div class="py-5 text-center">
-                <h2>Welcome to Digital Library!</h2>
-            </div>
-            <div class="row">
-                <div class="col-md-4 order-md-2 mb-4">
->>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                     <p class="lead">Please fill the fields below with your data.</p>
                 </div>
             </div>
@@ -121,7 +113,6 @@
                                 </div>
                             </div>
                             <hr class="mb-4">
-<<<<<<< HEAD
 
                             <div class="pb-2 mb-4 mx-auto">
                                 <div class="row">
@@ -135,15 +126,6 @@
                                             <a class="ml-2 signup-btn" @click="go_to_login()">Sign In now</a>
                                         </small>
                                     </div>
-=======
-                            <div class="row">
-                                <div class="mb-3">
-                                    <button class="btn btn-lg btn-primary btn-block orange-btn" @click="onSubmit()">Registrate</button>
-                                </div>
-
-                                <div class="col-md-4 order-md-2 mb-4">
-                                    <p class="" @click="go_to_login()">I'm already registered</p>
->>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                                 </div>
                             </div>
                         </div>
@@ -159,21 +141,12 @@
         name: "v-authentication",
         data: function(){
             return {
-<<<<<<< HEAD
                 first_name: "",
                 last_name: "",
                 middle_name: "",
                 email:"@innopolis.university",
                 password:"",
                 re_password:"",
-=======
-                first_name: "qwerty",
-                last_name: "qwerty",
-                middle_name: "qwerty",
-                email:"qwe@innopolis.university",
-                password:"qwe123rty567",
-                re_password:"qwe123rty567",
->>>>>>> a226abd2038862d474bbfba3095187947072d3fa
                 track: "",
                 course: "",
                 degree: "",
@@ -190,7 +163,6 @@
                 this.degree_bach = this.degree === 'Bachelor';
                 this.degree_mas = this.degree === 'Master'
             },
-<<<<<<< HEAD
             course:function(){
                 if(this.degree_mas === true){
                     this.track_availability = true;
@@ -202,19 +174,6 @@
                 }
                 this.track_availability = false;
             }
-=======
-			course:function(){
-				if(this.degree_mas === true){
-					this.track_availability = true;
-					return;
-				}
-				if(this.degree_bach === true && this.course > 2){//todo check whether this.course is numerical or string
-					this.track_availability = true;
-					return;
-				}
-				this.track_availability = false;
-			}
->>>>>>> a226abd2038862d474bbfba3095187947072d3fa
 
         },
         methods:{
