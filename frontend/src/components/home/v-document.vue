@@ -346,6 +346,6 @@
         z-index: 1;
     }
 	.textarea {
-		margin: 0;
+		margin: 0 !important;
 	}
 </style>
