@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="list-wrapper">
-            <div class="list-item" @click="openItem(doc)" v-for="doc in documents" :key="doc.title">
+            <div class="list-item" @click="openItem(doc,index)" v-for='(doc,index) in docs' :key="doc.title">
                 <div class="list-item-icon" :class="{
                     'list-item-icon-document': doc.type ==='document',
                     'list-item-icon-video': doc.type ==='video',
@@ -12,8 +12,8 @@
             </div>
     </div>
         <div class="navigation-bottom">
-            <router-link :to="{name: 'about_us'}" class="navigation-bottom-link">About us</router-link>
-            <router-link :to="{name: 'documentation'}" class="navigation-bottom-link">Documentation</router-link>
+            <router-link :to="{name: 'about_us'}" class="navigation-bottom-link">About us</router-link><br>
+            <router-link :to="{name: 'documentation'}" class="navigation-bottom-link">Documentation</router-link><br>
             <router-link :to="{name: 'contacts'}" class="navigation-bottom-link">Contacts</router-link>
         </div>
     </div>
@@ -23,22 +23,41 @@
     import {mapState, mapActions} from 'vuex';
     export default {
         name: "v-list",
+        data: function(){
+            return {
+            }
+        },
         methods: {
-            openItem(doc){
-                this.open(doc);
-                if(this.openedDocuments.length === 1)this.active(this.openedDocuments[0].title);
+            openTh(th){
+                this.$store.dispatch('openFolder',th);
             },
-            ...mapActions({open:"openDocument", active: "activateTab", getList:"getList"})
+            openItem(doc, i) {
+                if(doc.type === 'folder')this.openTh(doc);
+                if (this.openedDocuments.every(d => d.id !== doc.id)) {
+                    this.open(doc);
+                }
+                this.activateTab(doc.title);
+            },
+            ...mapActions({open:"openDocument", activateTab: "activateTab", getList:"getList"})
         },
         created() {
             this.getList();
+            this.$store.dispatch('getThematicalPages');
+        },
+        activated() {
+            this.getList();
         },
         computed: {
-            ...mapState([
-                'documents',
-                'openedDocuments'
-            ])
-        }
+            ...mapState({
+                documents: 'documents',
+                openedDocuments:'openedDocuments',
+                documentsInTh:'documentsInTh'
+            }),
+            docs: function(){
+                return this.documents;
+            }
+        },
+        watch: {}
     }
 </script>
 
@@ -46,7 +65,7 @@
     .navigation-bottom-link {
         padding: 0.5vh;
         text-decoration: none;
-        color: #5b5b5b;
+        color: #8a8a8a;
     }
     .list-item-icon {
         position: absolute;
@@ -81,8 +100,11 @@
         mask: url("../../../node_modules/bootstrap-icons/icons/folder2.svg") no-repeat 100%;
     }
     .navigation-bottom {
+        position: absolute;
+        bottom: 0;
         display: block;
-        height: 5vh;
+        height: 10vh;
         width: 100%;
+        padding-left: 3vh;
     }
 </style>

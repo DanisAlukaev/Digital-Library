@@ -1,15 +1,14 @@
 <template>
     <div class="bg-light">
         <div class="container">
-            <div class="py-5 text-center">
-                <h2>Welcome to Digital Library!</h2>
+            <div class="row">
+                <div class="pt-5 mx-auto text-center">
+                    <h2>Welcome to Digital Library!</h2>
+                </div>
             </div>
             <div class="row">
-                <div class="col-md-4 order-md-2 mb-4">
+                <div class="pb-2 mb-4 mx-auto text-center">
                     <p class="lead">Please fill the fields below with your data.</p>
-                </div>
-                <div class="col-md-4 order-md-2 mb-4">
-                    <button class="btn btn-lg btn-primary btn-block" @click="go_to_login()">I'm already registered</button>
                 </div>
             </div>
             <div class="row">
@@ -45,20 +44,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!--
-                        <div class="mb-3">
-                            <label for="username">Username</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">@</span>
-                                </div>
-                                <input type="text" class="form-control" id="username" placeholder="Username" required v-model="user_name">
-                                <div class="invalid-feedback" style="width: 100%;">
-                                    Your username is required.
-                                </div>
-                            </div>
-                        </div>
-                        -->
                         <div class="mb-3">
                             <label for="email">Email<span class="text-muted"></span></label>
                             <input type="email" class="form-control" id="email" placeholder="you@innopolis.university" required v-model="email">
@@ -129,8 +114,19 @@
                             </div>
                             <hr class="mb-4">
 
-                            <div class="mb-3">
-                                <button class="btn btn-lg btn-primary btn-block" @click="onSubmit()">Registrate</button>
+                            <div class="pb-2 mb-4 mx-auto">
+                                <div class="row">
+                                    <div class="mb-3">
+                                        <button class="btn btn-lg btn-primary btn-block orange-btn" @click="onSubmit()">Registrate</button>
+                                    </div>
+                                    <div class="ml-3">
+                                        <small class="text-muted">
+                                            Already have an account?
+                                            <br>
+                                            <a class="ml-2 signup-btn" @click="go_to_login()">Sign In now</a>
+                                        </small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -145,15 +141,15 @@
         name: "v-authentication",
         data: function(){
             return {
-                first_name: "qwerty",
-                last_name: "qwerty",
-                middle_name: "qwerty",
-                email:"qwe@innopolis.university",
-                password:"qwe123rty567",
-                re_password:"qwe123rty567",
-                track: "Computer Science",
-                course: "1",
-                degree: "Bachelor",
+                first_name: "",
+                last_name: "",
+                middle_name: "",
+                email:"@innopolis.university",
+                password:"",
+                re_password:"",
+                track: "",
+                course: "",
+                degree: "",
                 degree_mas: "",
                 degree_bach: "",
                 track_availability: ""
@@ -167,17 +163,17 @@
                 this.degree_bach = this.degree === 'Bachelor';
                 this.degree_mas = this.degree === 'Master'
             },
-			course:function(){
-				if(this.degree_mas === true){
-					this.track_availability = true;
-					return;
-				}
-				if(this.degree_bach === true && this.course > 2){//todo check whether this.course is numerical or string
-					this.track_availability = true;
-					return;
-				}
-				this.track_availability = false;
-			}
+            course:function(){
+                if(this.degree_mas === true){
+                    this.track_availability = true;
+                    return;
+                }
+                if(this.degree_bach === true && this.course > 2){//todo check whether this.course is numerical or string
+                    this.track_availability = true;
+                    return;
+                }
+                this.track_availability = false;
+            }
 
         },
         methods:{
@@ -214,8 +210,16 @@
 
 <style scoped>
     .container {
+        padding-left: 11%;
+        padding-right: 11%;
+        height: 100vh;
         max-width: 960px;
     }
-
+    .register-btn{
+        margin: 1%;
+    }
+    .btnregister {
+        background-color: #ffa854 !important;
+    }
     .lh-condensed {line-height: 1.25;}
 </style>

@@ -22,6 +22,8 @@ jobs:
       - name: Install and Build
         run: |
           npm install
+          npm install -g @vue/cli
+          npm install axios
           npm run build
 
       - name: Deploy demo to GitHub Pages

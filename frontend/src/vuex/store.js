@@ -4,53 +4,22 @@ import globalAxios from 'axios';
 import axios from './axios-auth';
 import router from "../router/router";
 
+let FormData = require('form-data');
+
 Vue.use(Vuex);
 let store = new Vuex.Store({
     state: {
-
+        documentsInTh: [],
+        bookmarks: [],
         currentComments: [],
-
         informationAboutMe: {},
         idToken: null,
+        thematicalPages: [],
         //userId: null,
         currentDoc: {},
-
         documents: [],
         openedDocuments: [],
         tags: []
-
-        /*
-        documents: [
-            {
-                name: "DL",
-                type: "document",
-                comments: [
-                    {text: "What is 2+2?", sender: "12k club member"},
-                    {
-                        text: "You should know it from the school. If the question was what is pi, some people would argue that it is 4 or 3, but to answer your question it is obviously 4.",
-                        sender: "Professor Gorodetskiy"
-                    },
-                    {text: "2+2=pi", sender: "36k club member"},
-                    {text: "22", sender: "JavaScript"}],
-                url: 'https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf',
-                rating: 3.5,
-                pageNum: 1,
-                active: 0
-            },
-            {
-                name: "FSE", type: "document",
-                url: "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/examples/learning/helloworld.pdf",
-                active: 0, pageNum: 1
-            },
-            {
-                name: "DE",
-                type: "document",
-                pageNum: 1,
-                active: 0,
-                url: "http://127.0.0.1:8000/media/files/Assignment_3_-_Alukaev_Danis.pdf"
-            }],*/
-        documents: [],
-        openedDocuments: [],
     },
     mutations: {
         clearAuthData(state) {
@@ -62,15 +31,19 @@ let store = new Vuex.Store({
             //state.userId = authData.userId;
         },
         openDocument(state, doc) {
-            if (state.openedDocuments.length === 0) doc.active = 1;
-            else doc.active = 0;
+            if (state.openedDocuments.length === 0)
+                doc.active = 1;
+            else
+                doc.active = 0;
             state.openedDocuments.push(doc);
+            state.currentDoc = doc;
         },
+
         closeDocument(state, name) {
             if (state.openedDocuments.length === 1) return;
             state.openedDocuments = state.openedDocuments.filter((tab, i) => {
                 if (name === tab.title && tab.active === 1 && state.openedDocuments.length > 0) state.openedDocuments[0].active = 1;
-                if (i === 0 && name === tab.title && tab.active && state.openedDocuments.length > 1) state.openedDocuments[1].active = 1;
+                if (i === 0 && name === tab.title && tab.active === 1 && state.openedDocuments.length > 1) state.openedDocuments[1].active = 1;
                 if (name === tab.title) tab.pageNum = 1;
 
                 return name !== tab.title;
@@ -80,9 +53,13 @@ let store = new Vuex.Store({
             doc.pageNum = page;
         },
         activateTab(state, name) {
-            state.openedDocuments.forEach((tab) => {
-                tab.title === name ? tab.active = 1 : tab.active = 0;
-            });
+            state.openedDocuments = state.openedDocuments.map(tab => ({
+                ...tab,
+                active: tab.title === name,
+            }));
+            //console.log(state.currentDoc);
+            //console.log(state.openedDocuments[0]);
+            state.currentDoc = state.openedDocuments.find(tab => tab.active);
         },
         getDocument(state) {
             state.openedDocuments.forEach((doc) => {
@@ -100,16 +77,79 @@ let store = new Vuex.Store({
         }
     },
     actions: {
+        search({state}, payload){
+            let config;
+            if(payload.tags.length === 0){
+                config = {
+                    method: 'get',
+                    url: `https://digital-library-iu.herokuapp.com/api/storage/uploads?title=${payload.title}`,
+                    headers: {}
+                }
+            }
+            else {
+                let str = payload.tags.reduce((acc, value, i)=>{
+                    if(i-1===payload.tags.length)acc+=value;
+                    else acc+=value + ',';
+                }, "");
+                config = {
+                    method: 'get',
+                    url: `https://digital-library-iu.herokuapp.com/api/storage/uploads?tags=${str}&title=${payload.title}`,
+                    headers: {}
+                };
+            }
+            axios(config)
+                .then(function (response) {
+                    state.documents = response.data;
+                    state.documents.forEach((doc)=>{
+                        if(doc.type === 0)doc.type = 'document';
+                        if(doc.type === 1)doc.type ='image';
+                        if(doc.type === 2)doc.type ='video';
+                        if(doc.type === 3)doc.type ='link';
+                        if(doc.status === 0)doc.status = 'rejected';
+                        if(doc.status === 1)doc.status = 'approved';
+                        if(doc.status === 2)doc.status = 'pending';
+                        doc.pageNum = 1;
+                        doc.active = 0;
+                    });
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        getThematicalPages({state}){
+            let config = {
+                method: 'get',
+                url: 'https://digital-library-iu.herokuapp.com/api/user_view/thematic_pages_list',
+                headers: {
+                    'Authorization': 'Token ' + state.idToken
+                }
+            };
+            axios(config)
+                .then(function (response) {
+                    state.thematicalPages = response.data;
+                    let arr = response.data;
+                    arr.forEach((el)=>{
+                        el.type = 'folder';
+                    });
+                    //state.documents.concat(arr);
+                    //console.log(arr);
+                    //console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+        },
         getTags({state}){
             let config = {
                 method: 'get',
-                url: 'http://127.0.0.1:8000/api/storage/tags/',
+                url: 'https://digital-library-iu.herokuapp.com/api/storage/tags/',
                 headers: {}
             };
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                    //console.log(JSON.stringify(response.data));
                     state.tags = response.data;
                 })
                 .catch(function (error) {
@@ -122,10 +162,29 @@ let store = new Vuex.Store({
                 commit('logout');
             }, expirationTime * 1000);
         },
+        changeInfo({state}, data){
+            let config = {
+                method: 'put',
+                url: 'https://digital-library-iu.herokuapp.com/auth/users/me/',
+                headers: {
+                    'Authorization': 'Token ' + state.idToken
+                },
+                data : data
+            };
+
+            axios(config)
+                .then(function (response) {
+                    //console.log(JSON.stringify(response.data));
+                    router.replace('/');
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+        },
         getList({state}){
             let config = {
                 method: 'get',
-                url: 'http://127.0.0.1:8000/api/storage/uploads/',
+                url: 'https://digital-library-iu.herokuapp.com/api/storage/uploads/',
                 headers: {}
             };
             if(state.documents.length === 0)axios(config)
@@ -171,7 +230,7 @@ let store = new Vuex.Store({
             };
             (async () => {
                 await logout();
-                if (flag) router.replace('/login');
+                if (flag) router.replace('/registration');
             })();
         },
         tryAutoLogin({commit}) {
@@ -187,30 +246,96 @@ let store = new Vuex.Store({
             });
             router.replace('/');
         },
-
         submitFile({state}, formdata){
+            let flag = true;
+            let sub = async()=>{
+                let config = {
+                    method: 'post',
+                    url: 'https://digital-library-iu.herokuapp.com/api/storage/uploads/',
+                    headers: {
+                        'Authorization': 'Token ' + state.idToken
+                    },
+                    data : formdata
+                };
+                await axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        flag = false;
+                        console.log(error.response.data);
+                    });
+            };
+            (async () => {
+                await sub();
+                if (flag) router.replace('/');
+            })();
+        },
+        getBookmarks({state}){
             let config = {
-                method: 'post',
-                url: 'http://127.0.0.1:8000/api/storage/uploads/',
+                method: 'get',
+                url: 'https://digital-library-iu.herokuapp.com/api/user_view/bookmark_list',
                 headers: {
                     'Authorization': 'Token ' + state.idToken
-                },
-                data : formdata
+                }
             };
 
             axios(config)
                 .then(function (response) {
+                    state.bookmarks = response.data;
+                    //console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error.response.data);
+                });
+        },
+        createComment({dispatch, state}, payload){
+            let create = async()=>{
+                let data = JSON.stringify({"content": payload.content,"upload": payload.id});
+                let config = {
+                    method: 'post',
+                    url: 'https://digital-library-iu.herokuapp.com/api/storage/comments/',
+                    headers: {
+                        'Authorization': 'Token '+ state.idToken,
+                        'Content-Type': 'application/json'
+                    },
+                    data : data
+                };
+
+                await axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log(error.response.data);
+                    });
+            };
+            (async()=>{
+                await create();
+                dispatch('getComments', payload.id);
+            })();
+        },
+        openFolder({state}, th){
+            let config = {
+                method: 'get',
+                url: 'https://digital-library-iu.herokuapp.com/api/user_view/thematic_page_uploads/1',
+                headers: {
+                    'Authorization': 'Token ' + state.idToken
+                }
+            };
+            axios(config)
+                .then(function (response) {
+                    state.documentsInTh = response.data;
                     console.log(JSON.stringify(response.data));
                 })
                 .catch(function (error) {
                     console.log(error.response.data);
                 });
-
         },
 getComments({state}, id){
     let config = {
         method: 'get',
-        url: `http://127.0.0.1:8000/api/storage/uploads/comments/${id}/`,
+        url: `https://digital-library-iu.herokuapp.com/api/storage/uploads/comments/${id}/`,
         headers: {}
     };
 
@@ -223,11 +348,9 @@ getComments({state}, id){
             console.log(error);
         });
         },
-
         signup({commit, dispatch}, authData) {//registration
             let flag = true;
             let registration = async () => {
-                let FormData = require('form-data');
                 let form = new FormData();
                 form.append('first_name', authData.first_name);
                 form.append('last_name', authData.last_name);
@@ -237,34 +360,35 @@ getComments({state}, id){
                 form.append('degree', authData.degree);
                 form.append('track', authData.track);
                 form.append('course', authData.course);
+                let id;
+                let config;
                 await axios.post('/auth/users/', form).then(res => {
-
-                    let id  = res.data.id;
-                    let config = {
+                    console.log(res.data);
+                    config = {
                         method: 'get',
-                        url: 'http://127.0.0.1:8000/auth/create_token/?id=' + id,
+                        url: 'https://digital-library-iu.herokuapp.com/auth/create_token/?id=' + res.data.id,
                         headers: {}
                     };
-                    axios(config)
-                        .then(function (response) {
-                            localStorage.setItem('token', res.data.auth_token);
-                            commit('authUser', {
-                                token: res.data,
-                            });
-                            console.log(JSON.stringify(response.data.auth_token));
-                        })
-                        .catch(function (error) {
-                            console.log(error.response.id);
-                        });
-
-                    const now = new Date();
-                    const expirationDate = new Date(now.getTime() + 60 * 24 * 3600 * 1000);
-
-                    //localStorage.setItem('userId', res.data.id);
-                    localStorage.setItem('expirationDate', expirationDate);
-                    dispatch('setLogoutTimer', 60 * 24 * 3600);
                 })
                     .catch(error => {
+                        console.log(error.response.data);
+                        flag = false;
+                    });
+                await axios(config)
+                    .then(function (response) {
+                        const now = new Date();
+                        const expirationDate = new Date(now.getTime() + 60 * 24 * 3600 * 1000);
+                        //localStorage.setItem('userId', res.data.id);
+                        localStorage.setItem('expirationDate', expirationDate);
+                        dispatch('setLogoutTimer', 60 * 24 * 3600);
+                        localStorage.setItem('token', response.data.auth_token);
+                        commit('authUser', {
+                            token: response.data.auth_token,
+                        });
+                        //console.log(JSON.stringify(response.data.auth_token));
+                    })
+                    .catch(function (error) {
+                        console.log("error occured");
                         console.log(error.response.data);
                         flag = false;
                     });
@@ -334,10 +458,11 @@ getComments({state}, id){
             };
             axios(config)
                 .then(function (response) {
+                    //console.log(response.data);
                     commit('getInfo', response.data);
                 })
                 .catch(function (error) {
-                    console.log(error);
+                    console.log(error.response.data);
                 });
 
         }

@@ -8,7 +8,7 @@
             <label for="inputPassword" class="sr-only">Password</label>
             <input type="password" id="inputPassword" class="form-control" placeholder="Password" required v-model="password">
 
-            <button class="btn btn-lg btn-primary btn-block" @click="onSubmit()">Sign in</button>
+            <button class="btn btn-lg btn-primary btn-block orange-btn" @click="onSubmit()">Sign in</button>
         </form>
     </div>
 </template>
@@ -18,8 +18,8 @@
         name: "login",
         data:function(){
             return {
-                email:"d.alukaev@innopolis.university",
-                password:"4F67rE21h%26l"
+                email:"",
+                password:""
             }
         },
         created() {
@@ -77,5 +77,8 @@
         margin-bottom: 10px;
         border-top-left-radius: 0;
         border-top-right-radius: 0;
+    }
+    .btnlogin {
+        background-color: #ffa854 !important;
     }
 </style>

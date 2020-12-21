@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-//import vHome from '../components/v-home';
 import vUploads from '../components/home/v-uploads';
 import vUsers from '../components/home/v-users';
 import vWrapper from '../components/v-wrapper';
@@ -21,30 +20,49 @@ let routes = [{
     }
     },
     {
-
         name: 'contribute',
         component: vCon,
-        path: "/contribute"
+        path: "/contribute",
+
+        beforeEnter(to, from, next){
+            if(store.state.idToken)next();
+            else next('./registration');
+        }
     },
     {
         name: 'uploads',
         component: vUploads,
-        path: '/uploads'
+        path: '/uploads',
+
+        beforeEnter(to, from, next){
+            if(store.state.idToken)next();
+            else next('./registration');
+        }
     },
     {
         name: 'users',
         component: vUsers,
-        path: '/Users'
+        path: '/Users',
+
+        beforeEnter(to, from, next){
+            if(store.state.idToken)next();
+            else next('./registration');
+        }
     },
     {
         name: "login",
         path: "/login",
-        component: vLogin
+        component: vLogin,
     },
     {
         name: "profile",
         path: "/profile",
         component: vProfile,
+
+        beforeEnter(to, from, next){
+            if(store.state.idToken)next();
+            else next('./registration');
+        }
     },
     {
         name: "documentation",

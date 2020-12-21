@@ -1,0 +1,44 @@
+/* Hide arrows of number input field */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+
+/* Style for number input field */
+input[type="number"], textarea {
+    border: none;
+    text-align: right;
+    background-color : #ffa854;
+    position: relative;
+    color: #ffffff;
+    font-size: 17px;
+    top: 1.8vh;
+    width: 5vh;
+    height: 2vh;
+    margin-left: 20%;
+}
+
+/* Hide borders while input is focused */
+textarea:focus, input:focus{
+    outline: none;
+}
+
+/* New color of buttons */
+.btn-primary.orange-btn {
+    background-color: #ffa854;
+    border-color: #ffa854;
+}
+
+.btn-primary.orange-btn:hover, .btn-primary.orange-btn:active, .btn-primary.orange-btn:focus, .btn-primary.orange-btn:hover:focus, .btn-primary.orange-btn:target {
+    background-color: #de9046 !important;
+    border-color: #de9046 !important;
+}
+
+/* New color of buttons */
+.get-rid-of-margins {
+    display: block;
+    margin: 0;
+}
+.signup-btn {
+    cursor: pointer
+}
