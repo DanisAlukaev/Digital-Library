@@ -32,6 +32,7 @@ textarea:focus, input:focus{
 .btn-primary.orange-btn:hover, .btn-primary.orange-btn:active, .btn-primary.orange-btn:focus, .btn-primary.orange-btn:hover:focus, .btn-primary.orange-btn:target {
     background-color: #de9046 !important;
     border-color: #de9046 !important;
+    box-shadow: none !important;
 }
 
 /* New color of buttons */

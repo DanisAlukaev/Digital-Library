@@ -119,12 +119,14 @@
                                     <div class="mb-3">
                                         <button class="btn btn-lg btn-primary btn-block orange-btn" @click="onSubmit()">Registrate</button>
                                     </div>
+
                                     <div class="ml-3">
-                                        <small class="text-muted">
-                                            Already have an account?
-                                            <br>
-                                            <a class="ml-2 signup-btn" @click="go_to_login()">Sign In now</a>
-                                        </small>
+                                    </div>
+
+                                    <div class="col-ml-3">
+                                        <small class="text-muted">Already have an account?</small>
+                                        <br>
+                                        <a class="signup-btn" style="margin-left:0px;" @click="go_to_login()">Sign In now</a>
                                     </div>
                                 </div>
                             </div>
