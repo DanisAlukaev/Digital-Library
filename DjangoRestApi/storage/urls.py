@@ -23,6 +23,7 @@ urlpatterns = [
     url('uploads/$', views.upload_list),
     url('uploads/(?P<pk>[0-9]+)/$', views.upload_detail),
     url('uploads/status/$', views.upload_status),
+    url('uploads/pending/$', views.upload_pending),
     url('uploads/last/(?P<pk>[0-9]+)/$', views.user_contributions),
     # For tags.
     url('tags/', views.tag_list),

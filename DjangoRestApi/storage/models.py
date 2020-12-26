@@ -1,3 +1,4 @@
+import os
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -62,6 +63,11 @@ class Upload(models.Model):
     rating = models.FloatField(default=0, null=True, blank=True)
     # In case it has not a type of link, in file field user can put an interested file.
     file = models.FileField(upload_to='files/', default='files/None/No-doc.pdf', null=True, blank=True)
+
+    # Name of the file.
+    name = models.CharField(max_length=10, default='', blank=True)
+    # Size of a file in MB.
+    size = models.CharField(max_length=15, default='', blank=True)
 
     class Meta:
         ordering = ['-date']

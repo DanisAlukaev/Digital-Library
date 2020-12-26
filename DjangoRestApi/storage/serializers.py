@@ -2,6 +2,21 @@ from rest_framework import serializers
 from storage.models import Upload, Tag, BookmarkPage, Comment
 from accounts.serializers import UserCreateSerializer
 from thematic_pages.serializers import ThematicPageSerializer
+import os
+
+
+def getsize(size_in_bytes):
+    boundary = 512000
+    if size_in_bytes < boundary:
+        value = round(size_in_bytes / 1024, 2)
+        ext = ' Kb'
+    elif size_in_bytes < boundary * 1024:
+        value = round(size_in_bytes / (1024 * 1024), 2)
+        ext = ' Mb'
+    else:
+        value = round(size_in_bytes / (1024 * 1024 * 1024), 2)
+        ext = ' Gb'
+    return str(value) + ext
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -71,7 +86,9 @@ class UploadSerializer(serializers.ModelSerializer):
                   'link',
                   'file',
                   'thematic_page',
-                  'rating')
+                  'rating',
+                  'size',
+                  'name',)
         extra_kwargs = {'user': {'required': False}}
 
     def create(self, validated_data):
@@ -82,6 +99,10 @@ class UploadSerializer(serializers.ModelSerializer):
             tags_data = validated_data.pop('tags')
         except Exception:
             tags_data = []
+
+        if validated_data['type'] != 3:
+            validated_data['name'] = validated_data['file'].name
+            validated_data['size'] = getsize(validated_data['file'].size)
 
         # Create a new instance of an upload.
         upload = Upload.objects.create(**validated_data)
@@ -110,6 +131,8 @@ class UploadSerializer(serializers.ModelSerializer):
         # Set new tags.
         for tag_data in tags_data:
             instance.tags.add(tag_data)
+        instance.name = validated_data.get('name', instance.name)
+        instance.size = validated_data.get('size', instance.name)
         # Save upload.
         instance.save()
         return instance
