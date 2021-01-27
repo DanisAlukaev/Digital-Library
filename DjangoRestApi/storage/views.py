@@ -30,6 +30,10 @@ DELETE      api/uploads/:id                         remove upload by id
 views.upload_status
 GET         api/uploads/status                      find all published uploads
 
+* for testing, the main version is in moderators_view
+views.upload_pending
+GET         api/uploads/pending                     find all pending uploads
+
 views.user_contributions
 GET         api/uploads/last/(?P<pk>[0-9]+)/        get three last contributions
 
@@ -183,6 +187,21 @@ def upload_status(request):
 
     # Retrieve all published uploads from database.
     uploads = Upload.objects.filter(status=1)
+
+    # GET request.
+    if request.method == 'GET':
+        # Serialize published uploads.
+        uploads_serializer = UploadSerializer(uploads, many=True)
+        # Return serialized instances.
+        return JsonResponse(uploads_serializer.data, safe=False)
+
+
+@api_view(['GET'])
+def upload_pending(request):
+    # Operates on all uploads that were approved by moderators.
+
+    # Retrieve all published uploads from database.
+    uploads = Upload.objects.filter(status=2)
 
     # GET request.
     if request.method == 'GET':
